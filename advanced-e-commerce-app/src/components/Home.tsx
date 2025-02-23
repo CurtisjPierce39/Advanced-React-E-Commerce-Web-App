@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getProducts, getCategories, getProductsByCategory } from '../types/index';
 import { addToCart } from '../store/cartSlice';
 
+
 const Home = () => {
     const dispatch = useDispatch();
     const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -33,17 +34,17 @@ const Home = () => {
                 ))}
             </select>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="container grid-cols-3 md:grid-cols-3 gap-4">
                 {products?.map(product => (
-                    <div key={product.id} className="border p-4 rounded">
-                        <img src={product.image} alt={product.title} className="w-full h-48 object-contain" />
+                    <div key={product.id} className="border p-4 rounded ">
+                        <img src={product.image} alt={product.title} className="w-full h-48 object-contain img-fluid" />
                         <h2 className="text-lg font-bold mt-2">{product.title}</h2>
                         <p className="text-gray-600">${product.price}</p>
                         <p className="text-sm">{product.description}</p>
                         <p className="text-sm">Rating: {product.rating.rate} ({product.rating.count} reviews)</p>
                         <button
                             onClick={() => dispatch(addToCart(product))}
-                            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+                            className="mt-2 px-4 py-2 rounded"
                         >
                             Add to Cart
                         </button>

@@ -5,6 +5,7 @@ import { store } from './types';
 import Navbar from './components/NavBar';
 import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
+import './App.css'
 
 const queryClient = new QueryClient();
 

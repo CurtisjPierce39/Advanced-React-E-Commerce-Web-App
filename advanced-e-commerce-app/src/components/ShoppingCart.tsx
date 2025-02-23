@@ -23,7 +23,7 @@ const ShoppingCart = () => {
                 <>
                     {cartItems.map(item => (
                         <div key={item.id} className="flex items-center border-b py-4">
-                            <img src={item.image} alt={item.title} className="w-24 h-24 object-contain" />
+                            <img src={item.image} alt={item.title} className="w-24 h-24 object-contain img-fluid" />
                             <div className="ml-4 flex-grow">
                                 <h2 className="font-bold">{item.title}</h2>
                                 <p>Quantity: {item.quantity}</p>
@@ -42,7 +42,7 @@ const ShoppingCart = () => {
                         <p>Total Price: ${totalPrice.toFixed(2)}</p>
                         <button
                             onClick={handleCheckout}
-                            className="mt-4 bg-green-500 text-white px-4 py-2 rounded"
+                            className="mt-4 bg-green-500 px-4 py-2 rounded"
                         >
                             Checkout
                         </button>
