@@ -34,7 +34,7 @@ const Home = () => {
                 ))}
             </select>
 
-            <div className="container grid-cols-3 md:grid-cols-3 gap-4">
+            <div className="container grid-cols-3 md:grid-cols-3 gap-4 content">
                 {products?.map(product => (
                     <div key={product.id} className="border p-4 rounded ">
                         <img src={product.image} alt={product.title} className="w-full h-48 object-contain img-fluid" />
