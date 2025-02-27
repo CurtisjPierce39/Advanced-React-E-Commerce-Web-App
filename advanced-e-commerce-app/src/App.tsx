@@ -4,15 +4,14 @@
 // import { auth } from './firebaseConfig';
 // import Register from './components/Register';
 // import Login from './components/Login';
-import AddDataForm from './components/AddDataForm';
-import DisplayData from './components/DisplayData';
 // import { Provider } from 'react-redux';
 // import { BrowserRouter, Routes, Route } from 'react-router-dom';
 // import { store } from './types';
 // import Navbar from './components/NavBar';
 // import Home from './components/Home';
 // import ShoppingCart from './components/ShoppingCart';
-import './App.css'
+import AddDataForm from './components/AddDataForm';
+import DisplayData from './components/DisplayData';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -22,6 +21,7 @@ import Navbar from './components/NavBar';
 import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
 import Login from './components/Login';
+import './App.css'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
