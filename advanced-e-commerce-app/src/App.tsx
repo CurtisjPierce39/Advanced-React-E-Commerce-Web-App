@@ -9,9 +9,6 @@ import Navbar from './components/NavBar';
 import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
 import Login from './components/Login';
-// import Order from './store/orderService';
-// import Product from './productService';
-// import userService from './store/userService';
 import ProductForm from './components/productForm';
 import './App.css'
 
