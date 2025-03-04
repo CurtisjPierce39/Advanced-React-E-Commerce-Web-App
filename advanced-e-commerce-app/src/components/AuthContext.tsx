@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebaseConfig';
+import { auth } from '../types/firebaseConfig';
 
 interface AuthContextType {
     user: any;

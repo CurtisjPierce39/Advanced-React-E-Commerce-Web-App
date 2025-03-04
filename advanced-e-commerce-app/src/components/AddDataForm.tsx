@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { db } from '../firebaseConfig';
+import { db } from '../types/firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 
 interface User {
-    id?: string; // id is optional, as it will only be available after data is fetched
+    id?: string;
     name: string;
+    email: string;
+    address: string;
     age: number;
 }
 
 const AddDataForm = () => {
-    const [data, setData] = useState<Omit<User, 'id'>>({ name: '', age: 0 });
+    const [data, setData] = useState<User>({ name: '', email: '', age: 0, address: '' });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -21,7 +23,7 @@ const AddDataForm = () => {
         try {
             await addDoc(collection(db, 'users'), data);
             alert('Data added!');
-            setData({ name: '', age: 0 }); // reset form
+            setData({ name: '', email: '', age: 0, address: '' }); // reset form
         } catch (error) {
             console.error('Error adding document: ', error);
         }
@@ -29,7 +31,10 @@ const AddDataForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input name="name" value={data.name} onChange={handleChange} placeholder="Name" />
+            <h1>Add New User</h1>
+            <input name="name" value={data.name} onChange={handleChange} placeholder="Name" /><br></br>
+            <input name="email" value={data.email} onChange={handleChange} placeholder="Email" /><br></br>
+            <input name="address" value={data.address} onChange={handleChange} placeholder="Address" /><br></br>
             <input name="age" type="number" value={data.age} onChange={handleChange} placeholder="Age" />
             <button type="submit">Add User</button>
         </form>

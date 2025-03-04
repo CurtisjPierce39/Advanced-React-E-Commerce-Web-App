@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { db } from '../firebaseConfig';
+import { useState, useEffect } from 'react';
+import { db } from '../types/firebaseConfig';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 interface User {
-    id?: string; // id is optional, as it will only be available after data is fetched
+    userId?: string;
     name: string;
+    email: string;
     age: number;
+    address: string;
 }
 
 const DisplayData = () => {
@@ -13,14 +15,12 @@ const DisplayData = () => {
     const [newAge, setNewAge] = useState<string>('');
     const [newName, setNewName] = useState<string>('');
 
-    // updateUser Function
-    const updateUser = async (userId, updatedData) => {
+    const updateUser = async (userId: string, updatedData: { name?: string; email?: string; age?: number; address?: string;}) => {
         const userDoc = doc(db, 'users', userId);
         await updateDoc(userDoc, updatedData);
     };
 
-    // deleteUser Function
-    const deleteUser = async (userId) => {
+    const deleteUser = async (userId: string) => {
         await deleteDoc(doc(db, 'users', userId))
     }
 
@@ -30,7 +30,7 @@ const DisplayData = () => {
             const dataArray = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
                 ...doc.data(),
-            })) as User[];
+            })) as unknown as User[];
             setUsers(dataArray);
         };
 
@@ -42,11 +42,12 @@ const DisplayData = () => {
             <h2>Users List</h2>
             {users.map((user) => (
                 <div
-                    key={user.id}
+                    key={user.userId}
                     style={{ border: '2px solid black', margin: '10px' }}
                 >
-                    <div key={user.id}>
+                    <div key={user.userId}>
                         <p>Name: {user.name}</p>
+                        <p>Email: {user.email}</p>
                         <p>Age: {user.age}</p>
                     </div>
                     <input
@@ -54,7 +55,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new name:"
                     />
-                    <button onClick={() => updateUser(user.id, { name: newName })}>
+                    <button onClick={() => updateUser(user.userId, { name: newName })}>
                         Update Name
                     </button>
                     <input
@@ -62,10 +63,10 @@ const DisplayData = () => {
                         type="number"
                         placeholder="Enter new age:"
                     />
-                    <button onClick={() => updateUser(user.id, { age: newAge })}>
+                    <button onClick={() => updateUser(user.userId, { age: newAge })}>
                         Update Age
                     </button>
-                    <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.id)}>Delete User</button>
+                    <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.userId)}>Delete User</button>
                 </div>
             ))}
         </div>

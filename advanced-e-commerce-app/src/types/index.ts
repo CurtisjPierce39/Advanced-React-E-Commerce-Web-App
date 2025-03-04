@@ -2,6 +2,7 @@ import axios from 'axios';
 import { configureStore } from '@reduxjs/toolkit';
 import cartReducer from '../store/cartSlice';
 
+
 export interface Product {
     id: number;
     title: string;

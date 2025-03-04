@@ -1,15 +1,3 @@
-// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { useEffect, useState } from 'react';
-// import { onAuthStateChanged, User } from 'firebase/auth';
-// import { auth } from './firebaseConfig';
-// import Register from './components/Register';
-// import Login from './components/Login';
-// import { Provider } from 'react-redux';
-// import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { store } from './types';
-// import Navbar from './components/NavBar';
-// import Home from './components/Home';
-// import ShoppingCart from './components/ShoppingCart';
 import AddDataForm from './components/AddDataForm';
 import DisplayData from './components/DisplayData';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -21,6 +9,10 @@ import Navbar from './components/NavBar';
 import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
 import Login from './components/Login';
+// import Order from './store/orderService';
+// import Product from './productService';
+// import userService from './store/userService';
+import ProductForm from './components/productForm';
 import './App.css'
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -52,6 +44,17 @@ function App() {
                 <Route path="/" element={
                   <ProtectedRoute>
                     <Home />
+                  </ProtectedRoute>
+                } />
+                <Route path="/users" element={
+                  <ProtectedRoute>
+                    <AddDataForm />
+                    <DisplayData />
+                  </ProtectedRoute>
+                } />
+                <Route path="/products" element={
+                  <ProtectedRoute>
+                    <ProductForm />
                   </ProtectedRoute>
                 } />
                 <Route path="/cart" element={

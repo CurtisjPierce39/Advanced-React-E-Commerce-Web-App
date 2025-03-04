@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../types';
-import { auth } from '../firebaseConfig';
+import { auth } from '../types/firebaseConfig';
 import { signOut } from 'firebase/auth';
 import { useAuth } from './AuthContext';
 
@@ -23,22 +23,28 @@ const Navbar = () => {
     if (!user) return null;
 
     return (
-        <nav className="bg-gradient-to-r from-blue-600 to-blue-800 shadow-lg">
-            <div className="container mx-auto px-4 py-3">
-                <div className="flex justify-between items-center">
-                    {<nav className="navbar bg-gray-800 text-white p-4">
-                        <div className="container mx-auto flex justify-between items-center">
-                            <Link to="/" className="text-xl font-bold">
+        <nav>
+            <div>
+                <div>
+                    {<nav className="navbar">
+                        <div className="container-fluid">
+                            <Link to="/">
                                 FakeStore
                             </Link>
-                            <div className="flex items-center gap-4">
-                                <Link to="/" className="hover:text-gray-300">
+                            <div>
+                                <Link to="/">
                                     Home
                                 </Link>
-                                <Link to="/cart" className="flex items-center hover:text-gray-300">
+                                <Link to="/users">
+                                Users
+                                </Link>
+                                <Link to="/products">
+                                Products
+                                </Link>
+                                <Link to="/cart">
                                     <span>Cart</span>
                                     {totalItems > 0 && (
-                                        <span className="ml-2 bg-red-500 rounded-full px-2 py-1 text-xs">
+                                        <span>
                                             {totalItems}
                                         </span>
                                     )}
@@ -46,10 +52,11 @@ const Navbar = () => {
                             </div>
                         </div>
                     </nav>}
-                    <div className="flex items-center space-x-6">
-                        <span className="text-white">
+                    <div>
+                        <span>
                             {user.email}
                         </span>
+                        <br></br>
                         <button
                             onClick={handleSignOut}
                             className="text-white hover:text-blue-200 transition duration-300"
