@@ -3,7 +3,7 @@ import { getAuth, Auth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAtG_5ozi3T1AmaK-vFk_COMADk2vcD_dY",
+    apiKey: "YOUR-API-KEY-HERE",
     authDomain: "advanced-e-commerce-web-app.firebaseapp.com",
     projectId: "advanced-e-commerce-web-app",
     storageBucket: "advanced-e-commerce-web-app.firebasestorage.app",
