@@ -14,22 +14,20 @@ export interface UserData {
 }
 
 export const authService = {
-    async register(email: string, password: string, userData: UserData): Promise<UserCredential> {
+    async register(email: string, password: string, userData: UserData) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
         await setDoc(doc(db, 'users', userCredential.user.uid), {
             ...userData,
             createdAt: new Date()
         });
-
-        return userCredential;
+        return userCredential.user;
     },
 
-    async login(email: string, password: string): Promise<UserCredential> {
+    async login(email: string, password: string) {
         return await signInWithEmailAndPassword(auth, email, password);
     },
 
-    async logout(): Promise<void> {
+    async logout() {
         await signOut(auth);
     }
 };
