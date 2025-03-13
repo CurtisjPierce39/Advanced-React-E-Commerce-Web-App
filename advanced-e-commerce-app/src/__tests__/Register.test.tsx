@@ -1,12 +1,13 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Register } from '../components/Register';
-import { authService } from '../store/authService';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Register from '../Register';
+import { registerUser } from '../../../services/authService';
 
+// Mock the authService
 jest.mock('../../../services/authService');
 
 describe('Register Component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        (registerUser as jest.Mock).mockClear();
     });
 
     it('renders registration form', () => {
@@ -14,41 +15,31 @@ describe('Register Component', () => {
 
         expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Display Name')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
         expect(screen.getByPlaceholderText('Address')).toBeInTheDocument();
     });
 
     it('handles form submission', async () => {
-        const mockRegister = authService.register as jest.Mock;
-        mockRegister.mockResolvedValueOnce({ uid: '123' });
+        (registerUser as jest.Mock).mockResolvedValueOnce({ uid: '123' });
 
         render(<Register />);
 
         fireEvent.change(screen.getByPlaceholderText('Email'), {
-            target: { value: 'test@example.com' }
+            target: { value: 'test@example.com' },
         });
         fireEvent.change(screen.getByPlaceholderText('Password'), {
-            target: { value: 'password123' }
+            target: { value: 'password123' },
         });
-        fireEvent.change(screen.getByPlaceholderText('Display Name'), {
-            target: { value: 'Test User' }
-        });
-        fireEvent.change(screen.getByPlaceholderText('Address'), {
-            target: { value: '123 Test St' }
+        fireEvent.change(screen.getByPlaceholderText('Name'), {
+            target: { value: 'Test User' },
         });
 
-        fireEvent.click(screen.getByText('Register'));
+        fireEvent.submit(screen.getByRole('button'));
 
-        await waitFor(() => {
-            expect(mockRegister).toHaveBeenCalledWith(
-                'test@example.com',
-                'password123',
-                expect.objectContaining({
-                    email: 'test@example.com',
-                    displayName: 'Test User',
-                    address: '123 Test St'
-                })
-            );
-        });
+        expect(registerUser).toHaveBeenCalledWith(
+            'test@example.com',
+            'password123',
+            expect.objectContaining({ email: 'test@example.com', name: 'Test User' })
+        );
     });
 });

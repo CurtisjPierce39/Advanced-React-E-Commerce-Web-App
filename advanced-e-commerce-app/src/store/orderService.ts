@@ -1,6 +1,8 @@
 import {
     collection,
     addDoc,
+    doc,
+    orderBy,
     query,
     where,
     getDocs
@@ -31,7 +33,7 @@ export const orderService = {
     },
 
     async getUserOrders(userId: string) {
-        const q = query(collection(db, 'orders'), where('userId', '==', userId));
+        const q = query(collection(db, 'orders'), where('userId', '==', userId), orderBy('createdAt', 'desc'));
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(doc => ({
             id: doc.id,

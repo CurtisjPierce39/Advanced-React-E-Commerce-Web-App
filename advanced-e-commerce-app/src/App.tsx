@@ -1,19 +1,19 @@
-import AddDataForm from './components/AddDataForm';
-import DisplayData from './components/DisplayData';
+import AddDataForm from './components/AddUserForm';
+import DisplayData from './components/DisplayUsers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { store } from './types';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import Navbar from './components/NavBar';
-import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
 import Login from './components/Login';
-import ProductForm from './components/productForm';
+import ProductForm from './components/ProductForm';
 import { ProductList } from './components/ProductList';
 import './App.css'
 import OrdersPage from './components/Orders';
 import OrderHistory from './components/OrderHistory';
+
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
