@@ -1,15 +1,14 @@
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    signOut,
-    UserCredential
+    signOut
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '../types/firebaseConfig';
 
 export interface UserData {
     email: string;
-    name: string;
+    displayName: string;
     address?: string;
 }
 
@@ -31,5 +30,3 @@ export const authService = {
         await signOut(auth);
     }
 };
-
-export default UserData;

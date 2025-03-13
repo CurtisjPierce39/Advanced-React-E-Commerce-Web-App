@@ -7,7 +7,8 @@ const ProductForm: React.FC = () => {
         price: 0,
         description: '',
         stock: 0,
-        imageUrl: ''
+        imageUrl: '',
+        category: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -27,7 +28,8 @@ const ProductForm: React.FC = () => {
                 price: 0,
                 description: '',
                 stock: 0,
-                imageUrl: ''
+                imageUrl: '',
+                category: '',
             });
             alert('Product added successfully!');
         } catch (error) {
@@ -104,6 +106,19 @@ const ProductForm: React.FC = () => {
                             type="url"
                             name="imageUrl"
                             value={product.imageUrl}
+                            onChange={handleChange}
+                            required
+                        />
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Category
+                        <input
+                            type="text"
+                            name="category"
+                            value={product.category}
                             onChange={handleChange}
                             required
                         />

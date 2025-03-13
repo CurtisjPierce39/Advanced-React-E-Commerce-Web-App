@@ -28,15 +28,14 @@ const Navbar = () => {
                 <div>
                     {<nav className="navbar">
                         <div className="container-fluid">
-                            <Link to="/">
-                                FakeStore
-                            </Link>
-                            <div>
                                 <Link to="/">
-                                    Home
+                                Home
                                 </Link>
                                 <Link to="/users">
                                 Users
+                                </Link>
+                                <Link to="/orders">
+                                Orders
                                 </Link>
                                 <Link to="/products">
                                 Products
@@ -49,7 +48,6 @@ const Navbar = () => {
                                         </span>
                                     )}
                                 </Link>
-                            </div>
                         </div>
                     </nav>}
                     <div>

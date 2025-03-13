@@ -3,19 +3,17 @@ import { db } from '../types/firebaseConfig';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
 interface User {
-    userId?: string;
+    id?: string;
     name: string;
     email: string;
-    age: number;
-    address: string;
 }
 
 const DisplayData = () => {
     const [users, setUsers] = useState<User[]>([]);
-    const [newAge, setNewAge] = useState<string>('');
+    const [newEmail, setNewEmail] = useState<string>('');
     const [newName, setNewName] = useState<string>('');
 
-    const updateUser = async (userId: string, updatedData: { name?: string; email?: string; age?: number; address?: string;}) => {
+    const updateUser = async (userId: string, updatedData: { name?: string; email?: string;}) => {
         const userDoc = doc(db, 'users', userId);
         await updateDoc(userDoc, updatedData);
     };
@@ -42,31 +40,30 @@ const DisplayData = () => {
             <h2>Users List</h2>
             {users.map((user) => (
                 <div
-                    key={user.userId}
+                    key={user.id}
                     style={{ border: '2px solid black', margin: '10px' }}
                 >
-                    <div key={user.userId}>
+                    <div key={user.id}>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
-                        <p>Age: {user.age}</p>
                     </div>
                     <input
                         onChange={(e) => setNewName(e.target.value)}
                         type="string"
                         placeholder="Enter new name:"
                     />
-                    <button onClick={() => updateUser(user.userId, { name: newName })}>
+                    <button onClick={() => updateUser(user.id, { name: newName })}>
                         Update Name
                     </button>
                     <input
-                        onChange={(e) => setNewAge(e.target.value)}
-                        type="number"
-                        placeholder="Enter new age:"
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        type="string"
+                        placeholder="Enter new email:"
                     />
-                    <button onClick={() => updateUser(user.userId, { age: newAge })}>
-                        Update Age
+                    <button onClick={() => updateUser(user.id, { email: newEmail })}>
+                        Update Email
                     </button>
-                    <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.userId)}>Delete User</button>
+                    <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.id)}>Delete User</button>
                 </div>
             ))}
         </div>

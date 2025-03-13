@@ -9,6 +9,7 @@ import {
 import { db } from '../types/firebaseConfig';
 
 export interface Product {
+    id?: string;
     name: string;
     price: number;
     description: string;
@@ -37,5 +38,3 @@ export const productService = {
         await deleteDoc(doc(db, 'products', productId));
     }
 };
-
-export default Product;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Order } from '../types/Order';
-import CartItem from '../store/orderService';
+import { Order, orderService } from '../store/orderService';
+import { CartItem } from '../types';
 import { useAuth } from './AuthContext';
 
 const OrdersPage: React.FC = () => {
@@ -30,7 +30,7 @@ const OrdersPage: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-6">Order History</h1>
+            <h1 className="text-2xl font-bold mb-6">Order Details</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
@@ -61,7 +61,7 @@ const OrdersPage: React.FC = () => {
                         <p className="text-gray-600 mb-4">{formatDate(selectedOrder.createdAt)}</p>
 
                         <div className="space-y-4">
-                            {selectedOrder.products.map((product) => (
+                            {selectedOrder.products.map((product: { id: React.Key | null | undefined; image: string | undefined; name: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; quantity: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined; price: number; }) => (
                                 <div key={product.id} className="flex items-center space-x-4 border-b pb-4">
                                     <img
                                         src={product.image}

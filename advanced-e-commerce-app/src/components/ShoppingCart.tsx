@@ -23,10 +23,9 @@ const ShoppingCart = () => {
                 <>
                     {cartItems.map(item => (
                         <div key={item.id} className="flex items-center border-b py-4 content">
-                            <img src={item.image} alt={item.title} className="w-24 h-24 object-contain img-fluid" />
+                            <img src={item.imageUrl} alt={item.title} className="w-24 h-24 object-contain img-fluid" />
                             <div className="ml-4 flex-grow">
-                                <h2 className="font-bold">{item.title}</h2>
-                                <p>Rating: {item.rating.rate}</p>
+                                <h2 className="font-bold">{item.name}</h2>
                                 <p>Quantity: {item.quantity}</p>
                                 <p>Price: ${(item.price * item.quantity).toFixed(2)}</p>
                                 <button

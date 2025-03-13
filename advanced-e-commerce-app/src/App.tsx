@@ -10,7 +10,10 @@ import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
 import Login from './components/Login';
 import ProductForm from './components/productForm';
+import { ProductList } from './components/ProductList';
 import './App.css'
+import OrdersPage from './components/Orders';
+import OrderHistory from './components/OrderHistory';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -40,13 +43,19 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={
                   <ProtectedRoute>
-                    <Home />
+                    <ProductList />
                   </ProtectedRoute>
                 } />
                 <Route path="/users" element={
                   <ProtectedRoute>
                     <AddDataForm />
                     <DisplayData />
+                  </ProtectedRoute>
+                } />
+                <Route path="/orders" element={
+                  <ProtectedRoute>
+                    <OrderHistory />
+                    <OrdersPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/products" element={
