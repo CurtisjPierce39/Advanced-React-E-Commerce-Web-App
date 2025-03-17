@@ -8,6 +8,7 @@ import {
     getDoc
 } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
+import { CartItem } from './cartService';
 
 export interface OrderItem {
     productId: string;
@@ -23,7 +24,7 @@ export interface Order {
 }
 
 export const orderService = {
-    async createOrder(order: Order) {
+    async createOrder(order: Order, p0: { items: CartItem[]; total: number; status: string; }) {
         return await addDoc(collection(db, 'orders'), {
             ...order,
             createdAt: new Date()

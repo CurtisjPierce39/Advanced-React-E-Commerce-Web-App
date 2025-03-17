@@ -1,8 +1,8 @@
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDocs, addDoc, updateDoc, query, where, collection } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
 
 export interface CartItem {
-    product: any;
+    product: string;
     productId: string;
     quantity: number;
     name: string;
@@ -13,23 +13,33 @@ export interface CartItem {
 export interface Cart {
     userId: string;
     items: CartItem[];
-    totalAmount: number;
+    totalPrice: number;
 }
 
 export const cartService = {
     async getCart(userId: string) {
-        const cartDoc = await getDoc(doc(db, 'carts', userId));
-        return cartDoc.data() as Cart;
+        const q = query(collection(db, 'carts'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
+        return querySnapshot.docs[0]?.data() as Cart;
     },
 
-    async updateCart(userId: string, cart: Cart) {
-        const cartRef = doc(db, 'carts', userId);
-        const cartDoc = await getDoc(cartRef);
+    async updateCart(userId: string, items: CartItem[]) {
+        const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const q = query(collection(db, 'carts'), where('userId', '==', userId));
+        const querySnapshot = await getDocs(q);
 
-        if (cartDoc.exists()) {
-            await updateDoc(cartRef, cart);
+        if (querySnapshot.empty) {
+            await addDoc(collection(db, 'carts'), {
+                userId,
+                items,
+                total
+            });
         } else {
-            await setDoc(cartRef, cart);
+            const cartDoc = querySnapshot.docs[0];
+            await updateDoc(doc(db, 'carts', cartDoc.id), {
+                items,
+                total
+            });
         }
     }
 };

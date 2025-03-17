@@ -4,6 +4,7 @@ import { auth } from '../types/firebaseConfig';
 
 export const Orders: React.FC = () => {
     const [orders, setOrders] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
     useEffect(() => {

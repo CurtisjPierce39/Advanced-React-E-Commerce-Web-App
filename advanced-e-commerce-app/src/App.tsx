@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/AuthContext';
 import { store } from './types';
 import './App.css'
-import Checkout from './components/Checkout';
+import { CartProvider } from './components/CartContext';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -34,42 +34,41 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <AuthProvider>
-          <BrowserRouter>
-            <div className="min-h-screen bg-gray-100">
-              <Navbar />
-              <Routes>
-                <Route path="/login" element={<Auth />} />
-                <Route path="/" element={
-                  <ProtectedRoute>
-                    <Products />
-                  </ProtectedRoute>
-                } />
-                <Route path="/profile" element={
-                  <ProtectedRoute>
-                    <UserProfile />
-                  </ProtectedRoute>
-                } />
-                <Route path="/orders" element={
-                  <ProtectedRoute>
-                    <Orders />
-                  </ProtectedRoute>
-                } />
-                <Route path="/addproducts" element={
-                  <ProtectedRoute>
-                    <ProductForm />
-                  </ProtectedRoute>
-                } />
-                <Route path="/cart" element={
-                  <ProtectedRoute>
-                    <ShoppingCart />
-                    <Checkout cartItems={[]} totalPrice={0} clearCart={function (): void {
-                      throw new Error('Function not implemented.');
-                    } } />
-                  </ProtectedRoute>
-                } />
-              </Routes>
-            </div>
-          </BrowserRouter>
+          <CartProvider>
+            <BrowserRouter>
+              <div className="min-h-screen bg-gray-100">
+                <Navbar />
+                <Routes>
+                  <Route path="/login" element={<Auth />} />
+                  <Route path="/" element={
+                    <ProtectedRoute>
+                      <Products />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <UserProfile />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/orders" element={
+                    <ProtectedRoute>
+                      <Orders />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/addproducts" element={
+                    <ProtectedRoute>
+                      <ProductForm />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/cart" element={
+                    <ProtectedRoute>
+                      <ShoppingCart />
+                    </ProtectedRoute>
+                  } />
+                </Routes>
+              </div>
+            </BrowserRouter>
+          </CartProvider>
         </AuthProvider>
       </Provider>
     </QueryClientProvider>

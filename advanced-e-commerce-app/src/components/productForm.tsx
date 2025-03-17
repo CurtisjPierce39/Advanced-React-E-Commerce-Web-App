@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { productService, Product } from '../store/productService';
 
 const ProductForm: React.FC = () => {
-    const [product, setProduct] = useState<Omit<Product, 'id'>>({
+    const [product, setProduct] = useState<Product>({
         name: '',
         price: 0,
         description: '',
