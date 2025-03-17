@@ -6,20 +6,26 @@ interface User {
     id?: string;
     name: string;
     email: string;
+    address: string;
+    displayName: string;
 }
 
 const DisplayData = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [newEmail, setNewEmail] = useState<string>('');
     const [newName, setNewName] = useState<string>('');
+    const [newAddress, setNewAddress] = useState<string>('');
+    const [newDisplayName, setDisplayName] = useState<string>('');
 
-    const updateUser = async (userId: string, updatedData: { name?: string; email?: string;}) => {
+    const updateUser = async (userId: string, updatedData: { name?: string; email?: string; address?: string; displayName?: string; }) => {
         const userDoc = doc(db, 'users', userId);
         await updateDoc(userDoc, updatedData);
+        alert("User Info Updated!")
     };
 
     const deleteUser = async (userId: string) => {
         await deleteDoc(doc(db, 'users', userId))
+        alert("User Deleted")
     }
 
     useEffect(() => {
@@ -46,6 +52,8 @@ const DisplayData = () => {
                     <div key={user.id}>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
+                        <p>Address: {user.address}</p>
+                        <p>Display Name: {user.displayName}</p>
                     </div>
                     <input
                         onChange={(e) => setNewName(e.target.value)}
@@ -54,7 +62,7 @@ const DisplayData = () => {
                     />
                     <button onClick={() => updateUser(user.id, { name: newName })}>
                         Update Name
-                    </button>
+                    </button><br></br>
                     <input
                         onChange={(e) => setNewEmail(e.target.value)}
                         type="string"
@@ -62,7 +70,23 @@ const DisplayData = () => {
                     />
                     <button onClick={() => updateUser(user.id, { email: newEmail })}>
                         Update Email
-                    </button>
+                    </button><br></br>
+                    <input
+                        onChange={(e) => setNewAddress(e.target.value)}
+                        type="string"
+                        placeholder="Enter new address:"
+                    />
+                    <button onClick={() => updateUser(user.id, { address: newAddress })}>
+                        Update Address
+                    </button><br></br>
+                    <input
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        type="string"
+                        placeholder="Enter new display name:"
+                    />
+                    <button onClick={() => updateUser(user.id, { displayName: newDisplayName })}>
+                        Update Display Name
+                    </button><br></br>
                     <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.id)}>Delete User</button>
                 </div>
             ))}

@@ -1,11 +1,11 @@
 import {
     collection,
     addDoc,
-    doc,
-    orderBy,
     query,
     where,
-    getDocs
+    getDocs,
+    doc,
+    getDoc
 } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
 
@@ -16,12 +16,10 @@ export interface OrderItem {
 }
 
 export interface Order {
-    id: string;
     userId: string;
     items: OrderItem[];
-    totalAmount: number;
+    totalPrice: number;
     createdAt: Date;
-    status: string;
 }
 
 export const orderService = {
@@ -33,11 +31,19 @@ export const orderService = {
     },
 
     async getUserOrders(userId: string) {
-        const q = query(collection(db, 'orders'), where('userId', '==', userId), orderBy('createdAt', 'desc'));
+        const q = query(collection(db, 'orders'), where('userId', '==', userId));
         const querySnapshot = await getDocs(q);
         return querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         }));
+    },
+
+    async getOrderDetails(orderId: string) {
+        const orderDoc = await getDoc(doc(db, 'orders', orderId));
+        return {
+            id: orderDoc.id,
+            ...orderDoc.data()
+        };
     }
 };

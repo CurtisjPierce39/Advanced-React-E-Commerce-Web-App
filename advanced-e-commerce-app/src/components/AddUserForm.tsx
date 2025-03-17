@@ -6,10 +6,12 @@ interface User {
     id?: string;
     name: string;
     email: string;
+    address: string;
+    displayName: string;
 }
 
 const AddDataForm = () => {
-    const [data, setData] = useState<User>({ name: '', email: ''});
+    const [data, setData] = useState<User>({ name: '', email: '', address: '', displayName: ''});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -20,8 +22,8 @@ const AddDataForm = () => {
         e.preventDefault();
         try {
             await addDoc(collection(db, 'users'), data);
-            alert('Data added!');
-            setData({ name: '', email: ''}); // reset form
+            alert('New User added!');
+            setData({ name: '', email: '', address: '', displayName: ''}); // reset form
         } catch (error) {
             console.error('Error adding document: ', error);
         }
@@ -32,6 +34,8 @@ const AddDataForm = () => {
             <h1>Add New User</h1>
             <input name="name" value={data.name} onChange={handleChange} placeholder="Name" /><br></br>
             <input name="email" value={data.email} onChange={handleChange} placeholder="Email" /><br></br>
+            <input name="address" value={data.address} onChange={handleChange} placeholder="Address" /><br></br>
+            <input name="displayName" value={data.displayName} onChange={handleChange} placeholder="Display Name" /><br></br>
             <button type="submit">Add User</button>
         </form>
     );

@@ -1,49 +1,138 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../types';
-import { removeFromCart, clearCart } from '../store/cartSlice';
+import React, { useEffect, useState } from 'react';
+import { auth, db } from '../types/firebaseConfig';
+import { cartService, CartItem } from '../store/cartService';
+import { addDoc, collection } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
+// import './ShoppingCart.css';
 
-const ShoppingCart = () => {
-    const dispatch = useDispatch();
-    const cartItems = useSelector((state: RootState) => state.cart.items);
+export const ShoppingCart: React.FC = () => {
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
 
-    const totalItems = cartItems.reduce((sum: any, item: { quantity: any; }) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum: number, item: { price: number; quantity: number; }) => sum + (item.price * item.quantity), 0);
+    useEffect(() => {
+        loadCart();
+    }, []);
 
-    const handleCheckout = () => {
-        dispatch(clearCart());
-        alert('Thank you for your purchase!');
+    const loadCart = async () => {
+        try {
+            if (auth.currentUser) {
+                const cart = await cartService.getCart(auth.currentUser.uid);
+                setCartItems(cart?.items || []);
+            }
+            setLoading(false);
+        } catch (error) {
+            console.error('Error loading cart:', error);
+            setLoading(false);
+        }
     };
 
+    const updateQuantity = async (productId: string, newQuantity: number) => {
+        if (auth.currentUser) {
+            const updatedItems = cartItems.map(item =>
+                item.productId === productId
+                    ? { ...item, quantity: newQuantity }
+                    : item
+            ).filter(item => item.quantity > 0);
+
+            const totalAmount = calculateTotal(updatedItems);
+
+            await cartService.updateCart(auth.currentUser.uid, {
+                userId: auth.currentUser.uid,
+                items: updatedItems,
+                totalAmount
+            });
+
+            setCartItems(updatedItems);
+        }
+    };
+
+    const calculateTotal = (items: CartItem[]): number => {
+        return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    };
+
+    const handleCheckout = async () => {
+        try {
+            if (auth.currentUser && cartItems.length > 0) {
+                const orderItems = cartItems.map(item => ({
+                    productId: item.productId,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    totalPrice: item.price * item.quantity
+                }));
+
+                const orderTotal = calculateTotal(calculateTotal(cartItems));
+
+                const order = {
+                    userId: auth.currentUser.uid,
+                    items: orderItems,
+                    totalPrice: orderTotal,
+                    status: 'pending',
+                    createdAt: new Date(),
+                    originalTotal: calculateTotal(cartItems),
+                    paymentStatus: 'pending'
+                };
+
+                const orderRef = await addDoc(collection(db, 'orders'), order);
+
+                await cartService.updateCart(auth.currentUser.uid, {
+                    userId: auth.currentUser.uid,
+                    items: [],
+                    totalAmount: 0
+                });
+
+                setCartItems([]);
+
+                navigate(`/order-confirmation/${orderRef.id}`);
+            }
+
+        } catch (error) {
+            console.error('Checkout error:', error);
+        }
+    };
+
+    if (loading) {
+        return <div>Loading cart...</div>;
+    }
+
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
+        <div className="shopping-cart">
+            <h2>Shopping Cart</h2>
             {cartItems.length === 0 ? (
                 <p>Your cart is empty</p>
             ) : (
                 <>
-                    {cartItems.map(item => (
-                        <div key={item.id} className="flex items-center border-b py-4 content">
-                            <img src={item.imageUrl} alt={item.title} className="w-24 h-24 object-contain img-fluid" />
-                            <div className="ml-4 flex-grow">
-                                <h2 className="font-bold">{item.title}</h2>
-                                <p>Quantity: {item.quantity}</p>
-                                <p>Price: ${(item.price * item.quantity).toFixed(2)}</p>
-                                <button
-                                    onClick={() => dispatch(removeFromCart(item.id))}
-                                    className="text-red-500"
-                                >
-                                    Remove
-                                </button>
+                    <div className="cart-items">
+                        {cartItems.map((item) => (
+                            <div key={item.productId} className="cart-item">
+                                <img src={item.imageUrl} alt={item.name} />
+                                <div className="item-details">
+                                    <h3>{item.name}</h3>
+                                    <p>${item.price}</p>
+                                </div>
+                                <div className="quantity-controls">
+                                    <button
+                                        onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                                    >
+                                        -
+                                    </button>
+                                    <span>{item.quantity}</span>
+                                    <button
+                                        onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                                <p className="item-total">
+                                    ${(item.price * item.quantity).toFixed(2)}
+                                </p>
                             </div>
-                        </div>
-                    ))}
-                    <div className="mt-4">
-                        <p>Total Items: {totalItems}</p>
-                        <p>Total Price: ${totalPrice.toFixed(2)}</p>
-                        <button
-                            onClick={handleCheckout}
-                            className="mt-4 bg-green-500 px-4 py-2 rounded"
-                        >
+                        ))}
+                    </div>
+                    <div className="cart-summary">
+                        <h3>Total: ${calculateTotal(cartItems).toFixed(2)}</h3>
+                        <button className="checkout-button" onClick={handleCheckout}>
                             Checkout
                         </button>
                     </div>
@@ -52,5 +141,3 @@ const ShoppingCart = () => {
         </div>
     );
 };
-
-export default ShoppingCart;

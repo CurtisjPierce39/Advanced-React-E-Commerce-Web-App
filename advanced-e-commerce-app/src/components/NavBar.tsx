@@ -1,71 +1,41 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../types';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { auth } from '../types/firebaseConfig';
-import { signOut } from 'firebase/auth';
-import { useAuth } from './AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
-    const { user } = useAuth();
+export const Navbar: React.FC = () => {
     const navigate = useNavigate();
-    const cartItems = useSelector((state: RootState) => state.cart.items);
-    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const user = auth.currentUser;
 
-    const handleSignOut = async () => {
+    const handleLogout = async () => {
         try {
-            await signOut(auth);
+            await auth.signOut();
             navigate('/login');
         } catch (error) {
-            console.error('Error signing out:', error);
+            console.error('Logout error:', error);
         }
     };
 
-    if (!user) return null;
-
     return (
-        <nav>
-            <div>
-                <div>
-                    {<nav className="navbar">
-                        <div className="container-fluid">
-                                <Link to="/">
-                                Home
-                                </Link>
-                                <Link to="/users">
-                                Users
-                                </Link>
-                                <Link to="/orders">
-                                Orders
-                                </Link>
-                                <Link to="/products">
-                                Add Products
-                                </Link>
-                                <Link to="/cart">
-                                    <span>Cart</span>
-                                    {totalItems > 0 && (
-                                        <span>
-                                            {totalItems}
-                                        </span>
-                                    )}
-                                </Link>
-                        </div>
-                    </nav>}
-                    <div>
-                        <span>
-                            {user.email}
-                        </span>
-                        <br></br>
-                        <button
-                            onClick={handleSignOut}
-                            className="text-white hover:text-blue-200 transition duration-300"
-                        >
-                            Sign Out
+        <nav className="navbar">
+            <div className="navbar-brand">
+                <Link to="/">My E-Commerce App</Link>
+            </div>
+            <div className="navbar-links">
+                <Link to="/addproducts">Add Products</Link>
+                {user ? (
+                    <>
+                        <Link to="/cart">Cart</Link>
+                        <Link to="/orders">Orders</Link>
+                        <Link to="/profile">Profile</Link>
+                        <button className="logout-btn" onClick={handleLogout}>
+                            Logout
                         </button>
-                    </div>
-                </div>
+                    </>
+                ) : (
+                    <Link to="/login">Login</Link>
+                )}
             </div>
         </nav>
     );
 };
-
-export default Navbar;

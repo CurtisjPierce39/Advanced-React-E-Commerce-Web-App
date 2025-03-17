@@ -1,38 +1,35 @@
-import { Product } from './productService';
+import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../types/firebaseConfig';
 
 export interface CartItem {
-    product: Product;
+    product: any;
+    productId: string;
     quantity: number;
+    name: string;
+    price: number;
     imageUrl: string;
 }
 
-export class CartService {
-    private static CART_KEY = 'shopping_cart';
-
-    static getCart(): CartItem[] {
-        const cart = localStorage.getItem(this.CART_KEY);
-        return cart ? JSON.parse(cart) : [];
-    }
-
-    static addToCart(product: Product, quantity: number = 1) {
-        const cart = this.getCart();
-        const existingItem = cart.find(item => item.product.id === product.id);
-
-        if (existingItem) {
-            existingItem.quantity += quantity;
-        } else {
-            cart.push({ product, quantity, imageUrl });
-        }
-
-        localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
-    }
-
-    static clearCart() {
-        localStorage.removeItem(this.CART_KEY);
-    }
-
-    static calculateTotal(): number {
-        return this.getCart().reduce((total, item) =>
-            total + (item.product.price * item.quantity), 0);
-    }
+export interface Cart {
+    userId: string;
+    items: CartItem[];
+    totalAmount: number;
 }
+
+export const cartService = {
+    async getCart(userId: string) {
+        const cartDoc = await getDoc(doc(db, 'carts', userId));
+        return cartDoc.data() as Cart;
+    },
+
+    async updateCart(userId: string, cart: Cart) {
+        const cartRef = doc(db, 'carts', userId);
+        const cartDoc = await getDoc(cartRef);
+
+        if (cartDoc.exists()) {
+            await updateDoc(cartRef, cart);
+        } else {
+            await setDoc(cartRef, cart);
+        }
+    }
+};

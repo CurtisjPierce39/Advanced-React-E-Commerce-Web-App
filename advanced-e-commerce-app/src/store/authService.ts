@@ -8,7 +8,7 @@ import { auth, db } from '../types/firebaseConfig';
 
 export interface UserData {
     email: string;
-    displayName: string;
+    name: string;
     address?: string;
 }
 

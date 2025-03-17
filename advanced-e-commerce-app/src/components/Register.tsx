@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import { authService } from '../store/authService';
+import { registerUser } from '../store/authService';
+import { useNavigate } from 'react-router-dom';
 
-export const Register: React.FC = () => {
+const Register: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
-        displayName: '',
+        name: '',
         address: ''
     });
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await authService.register(
-                formData.email,
-                formData.password,
-                {
-                    email: formData.email,
-                    displayName: formData.displayName,
-                    address: formData.address
-                }
-            );
-            // Redirect to home or dashboard
-        } catch (error) {
-            console.error('Registration error:', error);
+            await registerUser(formData.email, formData.password, {
+                email: formData.email,
+                name: formData.name,
+                address: formData.address
+            });
+            navigate('/');
+        } catch (err) {
+            setError('Failed to register');
         }
     };
 
@@ -43,9 +42,9 @@ export const Register: React.FC = () => {
             />
             <input
                 type="text"
-                placeholder="Display Name"
-                value={formData.displayName}
-                onChange={(e) => setFormData({ ...formData, displayName: e.target.value })}
+                placeholder="Name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
             <input
                 type="text"
@@ -53,7 +52,10 @@ export const Register: React.FC = () => {
                 value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             />
+            {error && <p>{error}</p>}
             <button type="submit">Register</button>
         </form>
     );
 };
+
+export default Register;

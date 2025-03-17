@@ -2,14 +2,15 @@ import {
     collection,
     addDoc,
     getDocs,
-    doc,
     updateDoc,
-    deleteDoc
+    deleteDoc,
+    doc
 } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
 
 export interface Product {
-    id?: string;
+    productId: string;
+    id: string;
     name: string;
     price: number;
     description: string;
