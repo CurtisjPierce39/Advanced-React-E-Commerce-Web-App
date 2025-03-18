@@ -17,6 +17,7 @@ export interface Product {
 }
 
 export interface CartItem extends Product {
+    name: ReactNode;
     quantity: number;
 }
 

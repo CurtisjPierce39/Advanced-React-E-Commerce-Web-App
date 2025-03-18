@@ -2,10 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { auth } from '../types/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from '../types';
+import { useSelector } from 'react-redux';
 
 export const Navbar: React.FC = () => {
     const navigate = useNavigate();
     const user = auth.currentUser;
+    const cartItems = useSelector((state: RootState) => state.cart.items);
+    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
 
     const handleLogout = async () => {
         try {
@@ -25,9 +30,17 @@ export const Navbar: React.FC = () => {
                 <Link to="/addproducts">Add Products</Link>
                 {user ? (
                     <>
-                        <Link to="/cart">Cart</Link>
+                        <Link to="/cart">
+                            <span>Cart&nbsp;</span>
+                            {totalItems > 0 && (
+                                <span>
+                                    ({totalItems})
+                                </span>
+                            )}
+                        </Link>
                         <Link to="/orders">Orders</Link>
                         <Link to="/profile">Profile</Link>
+                        <Link to="/checkout">Checkout</Link>
                         <button className="logout-btn" onClick={handleLogout}>
                             Logout
                         </button>

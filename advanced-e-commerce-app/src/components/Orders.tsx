@@ -1,61 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { orderService } from '../store/orderService';
-import { auth } from '../types/firebaseConfig';
+import { useAuth } from './AuthContext';
+import { orderService, OrderItem } from '../store/orderService';
 
-export const Orders: React.FC = () => {
+const OrderHistory: React.FC = () => {
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
-        loadOrders();
-    }, []);
+        const fetchOrders = async () => {
+            if (!currentUser) return;
 
-    const loadOrders = async () => {
-        if (auth.currentUser) {
-            const ordersData = await orderService.getUserOrders(auth.currentUser.uid);
-            setOrders(ordersData);
-        }
-    };
+            try {
+                const userOrders = await orderService.getUserOrders(currentUser.uid);
+                setOrders(userOrders);
+            } catch (err) {
+                setError('Failed to fetch orders');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const viewOrderDetails = async (orderId: string) => {
-        const orderDetails = await orderService.getOrderDetails(orderId);
-        setSelectedOrder(orderDetails);
-    };
+        fetchOrders();
+    }, [currentUser]);
+
+    if (loading) return <div>Loading orders...</div>;
+    if (error) return <div className="error-message">{error}</div>;
 
     return (
-        <div>
+        <div className="order-history">
             <h2>Order History</h2>
-            {selectedOrder ? (
-                <div>
-                    <h3>Order Details</h3>
-                    <p>Order ID: {selectedOrder.id}</p>
-                    <p>Date: {selectedOrder.createdAt.toDate().toLocaleDateString()}</p>
-                    <p>Total: ${selectedOrder.totalPrice}</p>
-                    <h4>Items:</h4>
-                    {selectedOrder.items.map((item: any) => (
-                        <div key={item.productId}>
-                            <p>Product ID: {item.productId}</p>
-                            <p>Quantity: {item.quantity}</p>
-                            <p>Price: ${item.price}</p>
-                        </div>
-                    ))}
-                    <button onClick={() => setSelectedOrder(null)}>Back to Orders</button>
-                </div>
+            {orders.length === 0 ? (
+                <p>No orders found</p>
             ) : (
-                <div>
-                    {orders.map((order) => (
-                        <div key={order.id} className="order-card">
-                            <p>Order ID: {order.id}</p>
-                            <p>Date: {order.createdAt.toDate().toLocaleDateString()}</p>
-                            <p>Total: ${order.totalPrice}</p>
-                            <button onClick={() => viewOrderDetails(order.id)}>
-                                View Details
-                            </button>
+                orders.map(order => (
+                    <div key={order.id} className="order-card">
+                        <div className="order-header">
+                            <span>Order ID: {order.id}</span>
+                            <span>Date: {order.createdAt.toDate().toLocaleDateString()}</span>
                         </div>
-                    ))}
-                </div>
+                        <div className="order-items">
+                            {order.items.map((item: OrderItem, index: number) => (
+                                <div key={index} className="order-item">
+                                    <span>Product ID: {item.productId}</span>
+                                    <span>Quantity: {item.quantity}</span>
+                                    <span>Price: ${item.price}</span>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="order-total">
+                            <strong>Total: ${order.totalPrice}</strong>
+                        </div>
+                    </div>
+                ))
             )}
         </div>
     );
 };
+
+export default OrderHistory;

@@ -1,45 +1,41 @@
-import { doc, getDocs, addDoc, updateDoc, query, where, collection } from 'firebase/firestore';
-import { db } from '../types/firebaseConfig';
+import { Product } from './productService';
 
 export interface CartItem {
-    product: string;
-    productId: string;
-    quantity: number;
     name: string;
     price: number;
+    id: string;
+    product: Product;
+    quantity: number;
     imageUrl: string;
 }
 
-export interface Cart {
-    userId: string;
-    items: CartItem[];
-    totalPrice: number;
-}
+export class CartService {
+    private static CART_KEY = 'shopping_cart';
 
-export const cartService = {
-    async getCart(userId: string) {
-        const q = query(collection(db, 'carts'), where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-        return querySnapshot.docs[0]?.data() as Cart;
-    },
-
-    async updateCart(userId: string, items: CartItem[]) {
-        const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const q = query(collection(db, 'carts'), where('userId', '==', userId));
-        const querySnapshot = await getDocs(q);
-
-        if (querySnapshot.empty) {
-            await addDoc(collection(db, 'carts'), {
-                userId,
-                items,
-                total
-            });
-        } else {
-            const cartDoc = querySnapshot.docs[0];
-            await updateDoc(doc(db, 'carts', cartDoc.id), {
-                items,
-                total
-            });
-        }
+    static getCart(): CartItem[] {
+        const cart = localStorage.getItem(this.CART_KEY);
+        return cart ? JSON.parse(cart) : [];
     }
-};
+
+    static addToCart(product: Product, quantity: number = 1) {
+        const cart = this.getCart();
+        const existingItem = cart.find(item => item.product.id === product.id);
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({ product, quantity, imageUrl });
+        }
+
+        localStorage.setItem(this.CART_KEY, JSON.stringify(cart));
+    }
+
+    static clearCart() {
+        localStorage.removeItem(this.CART_KEY);
+    }
+
+    static calculateTotal(): number {
+        return this.getCart().reduce((total, item) =>
+            total + (item.product.price * item.quantity), 0);
+    }
+}

@@ -7,6 +7,7 @@ export const Auth: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
     const navigate = useNavigate();
 
 
@@ -42,12 +43,15 @@ export const Auth: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 {!isLogin && (
-                    <input
+                    <><input
                         type="text"
                         placeholder="Name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
+                        onChange={(e) => setName(e.target.value)} /><input
+                            type="text"
+                            placeholder="Address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)} /></>
                 )}
                 <button type="submit">{isLogin ? 'Login' : 'Register'}</button>
             </form>
