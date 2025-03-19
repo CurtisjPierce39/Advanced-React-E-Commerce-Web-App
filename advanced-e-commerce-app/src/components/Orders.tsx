@@ -38,21 +38,22 @@ const OrderHistory: React.FC = () => {
                 orders.map(order => (
                     <div key={order.id} className="order-card">
                         <div className="order-header">
-                            <span>Order ID: {order.id}</span>
+                            <span>Order ID: {order.id}</span><br></br>
+                            <span>User ID: {order.userId}</span><br></br>
                             <span>Date: {order.createdAt.toDate().toLocaleDateString()}</span>
                         </div>
                         <div className="order-items">
                             {order.items.map((item: OrderItem, index: number) => (
-                                <div key={index} className="order-item">
-                                    <span>Product ID: {item.productId}</span>
-                                    <span>Quantity: {item.quantity}</span>
+                                <div key={index} className="order-item"><br></br>
+                                    <span>Product ID: {item.productId}</span><br></br>
+                                    <span>Quantity: {item.quantity}</span><br></br>
                                     <span>Price: ${item.price}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="order-total">
                             <strong>Total: ${order.totalPrice}</strong>
-                        </div>
+                        </div><br></br>
                     </div>
                 ))
             )}

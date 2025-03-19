@@ -1,5 +1,6 @@
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
+import { UserData } from './authService';
 
 export const userService = {
     async getUserProfile(userId: string) {

@@ -12,6 +12,7 @@ import { AuthProvider, useAuth } from './components/AuthContext';
 import { store } from './types';
 import './App.css'
 import { Checkout } from './components/Checkout';
+import DisplayData from './components/DisplayUsers';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { currentUser, loading } = useAuth();
@@ -47,6 +48,7 @@ function App() {
                 <Route path="/profile" element={
                   <ProtectedRoute>
                     <UserProfile />
+                    <DisplayData />
                   </ProtectedRoute>
                 } />
                 <Route path="/orders" element={
