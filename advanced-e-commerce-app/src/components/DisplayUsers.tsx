@@ -48,6 +48,7 @@ const DisplayData = () => {
                 <div
                     key={user.id}
                     style={{ border: '2px solid black', margin: '10px' }}
+                    className='border p-4 rounded'
                 >
                     <div key={user.id}>
                         <p>Name: {user.name}</p>

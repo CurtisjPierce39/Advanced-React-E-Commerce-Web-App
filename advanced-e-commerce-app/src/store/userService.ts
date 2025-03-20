@@ -16,3 +16,5 @@ export const userService = {
         await deleteDoc(doc(db, 'users', userId));
     }
 };
+
+export default userService;

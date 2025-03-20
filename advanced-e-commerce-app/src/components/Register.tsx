@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { registerUser } from '../store/authService';
 import { useNavigate } from 'react-router-dom';
 
-const Register: React.FC = () => {
+const Register = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
@@ -12,7 +12,7 @@ const Register: React.FC = () => {
     });
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await registerUser(formData.email, formData.password, {
@@ -45,12 +45,6 @@ const Register: React.FC = () => {
                 placeholder="Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-            <input
-                type="text"
-                placeholder="Address"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
             />
             {error && <p>{error}</p>}
             <button type="submit">Register</button>

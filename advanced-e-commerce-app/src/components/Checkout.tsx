@@ -18,10 +18,9 @@ export const Checkout: React.FC = () => {
     const cart = useSelector((state: RootState) => state.cart);
     const dispatch = useDispatch();
 
-    // Calculate total price from cart items
     const totalPrice = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    const [shippingDetails, setShippingDetails] = useState<ShippingDetails>({
+    const [shippingDetails] = useState<ShippingDetails>({
         address: '',
         city: '',
         zipCode: '',
@@ -36,11 +35,12 @@ export const Checkout: React.FC = () => {
             const orderData = {
                 userId: currentUser.uid,
                 items: cart.items.map(item => ({
+                    name: item.name,
                     productId: item.id,
                     quantity: item.quantity,
                     price: item.price
                 })),
-                totalPrice: totalPrice, // Use calculated totalPrice
+                totalPrice: totalPrice,
                 shippingDetails,
                 createdAt: new Date()
             };
@@ -60,12 +60,13 @@ export const Checkout: React.FC = () => {
     return (
         <div className="checkout">
             <h2>Checkout</h2>
-            <div className="order-summary">
+            <div className="border p-4 rounded">
                 <h3>Order Summary</h3>
-                {cart.items.map((item) => (
-                    <div key={item.id} className="order-item">
-                        <span>{item.name}</span>
-                        <span>{item.quantity} x ${item.price}</span>
+                {cart.items.map(item => (
+                    <div key={item.id} className="flex items-center border-b py-4 content">
+                        <img src={item.imageUrl} alt={item.name} className="w-24 h-24 object-contain img-fluid" /><br></br>
+                        <span>Name: {item.name}</span>
+                        <span><strong>{item.quantity} x ${item.price}</strong></span>
                     </div>
                 ))}
                 <div className="order-total">
@@ -73,9 +74,7 @@ export const Checkout: React.FC = () => {
                 </div>
             </div>
 
-            {/* Rest of the component remains the same */}
             <form onSubmit={handleSubmit}>
-                {/* ... existing form code ... */}
             <CheckoutButton/>
             </form>
         </div>

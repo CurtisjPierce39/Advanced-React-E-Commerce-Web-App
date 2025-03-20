@@ -42,7 +42,7 @@ const OrderHistory: React.FC = () => {
                             <span>User ID: {order.userId}</span><br></br>
                             <span>Date: {order.createdAt.toDate().toLocaleDateString()}</span>
                         </div>
-                        <div className="order-items">
+                        <div className="border p-4 rounded">
                             {order.items.map((item: OrderItem, index: number) => (
                                 <div key={index} className="order-item"><br></br>
                                     <span>Product ID: {item.productId}</span><br></br>

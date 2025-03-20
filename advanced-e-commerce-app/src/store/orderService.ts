@@ -11,6 +11,7 @@ import { db } from '../types/firebaseConfig';
 
 export interface OrderItem {
     productId: string;
+    productName: string,
     quantity: number;
     price: number;
 }

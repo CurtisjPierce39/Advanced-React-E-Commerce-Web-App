@@ -12,6 +12,15 @@ export interface UserData {
     address?: string;
 }
 
+export const registerUser = async (
+    email: string, 
+    password: string, 
+    userData: UserData
+): Promise<void> => {
+    // Implementation will go here
+    return Promise.resolve();
+};
+
 export const authService = {
     async register(email: string, password: string, userData: UserData) {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
