@@ -16,7 +16,10 @@ export interface Product {
     description: string;
     stock: number;
     imageUrl: string;
+    category: string;
 }
+
+export type NewProduct = Omit<Product, 'productId' | 'id'>;
 
 export const productService = {
     async getAllProducts() {
@@ -27,7 +30,7 @@ export const productService = {
         }));
     },
 
-    async createProduct(product: Product) {
+    async createProduct(product: NewProduct) {
         return await addDoc(collection(db, 'products'), product);
     },
 

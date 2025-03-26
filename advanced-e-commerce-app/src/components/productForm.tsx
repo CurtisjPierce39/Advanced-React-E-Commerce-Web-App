@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { productService, Product } from '../store/productService';
 
 const ProductForm: React.FC = () => {
-    const [product, setProduct] = useState<Product>({
+    const [product, setProduct] = useState<Omit<Product, 'productId' | 'id'>>({        
         name: '',
         price: 0,
         description: '',
@@ -22,7 +23,14 @@ const ProductForm: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await productService.createProduct(product);
+            await productService.createProduct({
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                stock: product.stock,
+                imageUrl: product.imageUrl,
+                category: product.category
+            });
             setProduct({
                 name: '',
                 price: 0,
@@ -41,7 +49,7 @@ const ProductForm: React.FC = () => {
     return (
         <div>
             <h2 className="font-bold mb-6">Add New Product</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4" role="form">
                 <div>
                     <label>
                         Product Name
