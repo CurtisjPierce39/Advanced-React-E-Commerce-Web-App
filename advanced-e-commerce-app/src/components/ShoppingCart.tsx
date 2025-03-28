@@ -18,7 +18,7 @@ export const ShoppingCart: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
     const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0).toFixed(2);
+    const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
 
     const handleCheckout = () => {
         navigate('/checkout');

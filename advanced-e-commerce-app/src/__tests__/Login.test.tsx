@@ -52,7 +52,7 @@ describe('Auth Component', () => {
             expect(screen.queryByTestId('name-input')).not.toBeInTheDocument();
         });
 
-        const handleLoginTest = async () => {
+        it('handles successful login', async () => {
             (authService.login as jest.Mock).mockResolvedValueOnce({ user: { uid: '123' } });
             renderAuth();
             
@@ -69,9 +69,9 @@ describe('Auth Component', () => {
     
             expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
             expect(mockNavigate).toHaveBeenCalledWith('/');
-        };
+        });
 
-        const handleLoginErrorTest = async () => {
+        it('handles login error', async () => {
             const mockError = new Error('Login failed');
             (authService.login as jest.Mock).mockRejectedValueOnce(mockError);
 
@@ -92,13 +92,8 @@ describe('Auth Component', () => {
             await waitFor(() => {
                 expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });
-        };
+        });
 
-        it('handles successful login', handleLoginTest);
-        it('handles login error', handleLoginErrorTest);
-    });
-
-    describe('Register Mode', () => {
         it('switches to register form', () => {
             renderAuth();
             const switchButton = screen.getByTestId('toggle-auth-mode-button');
