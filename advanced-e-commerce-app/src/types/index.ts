@@ -4,20 +4,23 @@ import cartReducer from '../store/cartSlice';
 
 
 export interface Product {
-    id: number;
-    title: string;
+    id: string | number;
+    title?: string;
+    name?: string;
     price: number;
     category: string;
     description: string;
-    rating: {
+    rating?: {
         rate: number;
         count: number;
     };
-    image: string;
+    image?: string;
+    imageUrl?: string;
+    stock?: number;
 }
 
-export interface CartItem extends Product {
-    name: ReactNode;
+export interface CartItem extends Omit<Product, 'title'> {
+    name: string;
     quantity: number;
 }
 

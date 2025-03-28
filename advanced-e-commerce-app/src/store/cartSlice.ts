@@ -21,14 +21,27 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action: PayloadAction<Product>) => {
-            const existingItem = state.items.find(item => item.id === action.payload.id);
+            const product = action.payload;
+            if (!product.id || typeof product.price !== 'number' || !product.category || !product.description) {
+                console.error('Invalid product data:', product);
+                return;
+            }
+            // Create a valid CartItem with all required fields
+            const cartItem: CartItem = {
+                id: product.id,
+                name: product.name || product.title || '',
+                price: product.price,
+                category: product.category,
+                description: product.description,
+                rating: product.rating,
+                image: product.image || product.imageUrl,
+                quantity: 1
+            };
+            const existingItem = state.items.find(item => item.id === cartItem.id);
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                state.items.push({
-                    ...action.payload, quantity: 1,
-                    name: undefined
-                });
+                state.items.push(cartItem);
             }
             sessionStorage.setItem('cart', JSON.stringify(state));
         },

@@ -52,7 +52,7 @@ const OrderHistory: React.FC = () => {
                             ))}
                         </div>
                         <div className="order-total">
-                            <strong>Total: ${order.totalPrice}</strong>
+                            <strong>Total: ${order.totalAmount}</strong>
                         </div><br></br>
                     </div>
                 ))
