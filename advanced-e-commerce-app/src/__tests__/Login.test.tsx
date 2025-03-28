@@ -85,8 +85,8 @@ describe('Auth Component', () => {
             
             await waitFor(() => {
                 fireEvent.click(submitButton);
-                expect(() => authService.login('test@example.com', 'password123')).toBeCalled();
-                expect(() => mockNavigate('/')).toBeCalled();
+                expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
+                expect(mockNavigate).toHaveBeenCalledWith('/');
             });
     
             await waitFor(() => {

@@ -52,7 +52,7 @@ const cartSlice = createSlice({
             }
             sessionStorage.setItem('cart', JSON.stringify(state));
         },
-        removeFromCart: (state, action: PayloadAction<number>) => {
+        removeFromCart: (state, action: PayloadAction<string | number>) => {
             state.items = state.items.filter(item => item.id !== action.payload);
             sessionStorage.setItem('cart', JSON.stringify(state));
         },
