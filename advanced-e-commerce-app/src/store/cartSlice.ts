@@ -8,10 +8,17 @@ interface CartState {
 
 const loadCartFromSession = (): CartState => {
     const savedCart = sessionStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : {
+    const defaultState: CartState = {
         items: [],
         totalPrice: 0
     };
+    if (!savedCart) return defaultState;
+    try {
+        const parsedCart = JSON.parse(savedCart) as CartState;
+        return parsedCart;
+    } catch {
+        return defaultState;
+    }
 };
 
 const initialState: CartState = loadCartFromSession();
