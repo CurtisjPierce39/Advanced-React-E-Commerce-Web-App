@@ -20,126 +20,103 @@ const ProductForm: React.FC = () => {
         }));
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            await productService.createProduct({
-                name: product.name,
-                price: product.price,
-                description: product.description,
-                stock: product.stock,
-                imageUrl: product.imageUrl,
-                category: product.category
-            });
-            setProduct({
-                name: '',
-                price: 0,
-                description: '',
-                stock: 0,
-                imageUrl: '',
-                category: '',
-            });
-            alert('Product added successfully!');
-        } catch (error) {
-            console.error('Error adding product:', error);
-            alert('Failed to add product');
-        }
+        void (async () => {
+            try {
+                await productService.createProduct({
+                    name: product.name,
+                    price: product.price,
+                    description: product.description,
+                    stock: product.stock,
+                    imageUrl: product.imageUrl,
+                    category: product.category
+                });
+                setProduct({
+                    name: '',
+                    price: 0,
+                    description: '',
+                    stock: 0,
+                    imageUrl: '',
+                    category: '',
+                });
+                alert('Product added successfully!');
+            } catch (error) {
+                console.error('Error adding product:', error);
+                alert('Failed to add product');
+            }
+        })();
     };
 
     return (
-        <div>
-            <h2 className="font-bold mb-6">Add New Product</h2>
-            <form onSubmit={handleSubmit} className="space-y-4" role="form">
-                <div>
-                    <label>
-                        Product Name
-                        <input
-                            type="text"
-                            name="name"
-                            value={product.name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        Price
-                        <input
-                            type="number"
-                            name="price"
-                            value={product.price}
-                            onChange={handleChange}
-                            required
-                            min="0"
-                            step="0.01"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Description
-                        <textarea
-                            name="description"
-                            value={product.description}
-                            onChange={handleChange}
-                            required
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Stock
-                        <input
-                            type="number"
-                            name="stock"
-                            value={product.stock}
-                            onChange={handleChange}
-                            required
-                            min="0"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                        Image URL
-                        <input
-                            type="url"
-                            name="imageUrl"
-                            value={product.imageUrl}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                </div>
-
-                <div>
-                    <label>
-                        Category
-                        <input
-                            type="text"
-                            name="category"
-                            value={product.category}
-                            onChange={handleChange}
-                            required
-                        />
-                    </label>
-                </div>
-
-                <button
-                    type="submit"
-                >
-                    Add Product
-                </button>
-            </form>
-        </div>
+        <form onSubmit={handleSubmit} role="form">
+            <div>
+                <label htmlFor="name">Product Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={product.name}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="price">Price</label>
+                <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={product.price}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    value={product.description}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="stock">Stock</label>
+                <input
+                    type="number"
+                    id="stock"
+                    name="stock"
+                    value={product.stock}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="imageUrl">Image URL</label>
+                <input
+                    type="text"
+                    id="imageUrl"
+                    name="imageUrl"
+                    value={product.imageUrl}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <div>
+                <label htmlFor="category">Category</label>
+                <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    value={product.category}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+            <button type="submit">Add Product</button>
+        </form>
     );
 };
 

@@ -19,19 +19,21 @@ const Register: React.FC = () => {
     });
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try {
-            await registerUser(formData.email, formData.password, {
-                email: formData.email,
-                name: formData.name,
-                address: formData.address
-            });
-            navigate('/');
-        } catch (error) {
-            setError('Failed to register');
-            console.error('Registration error:', error);
-        }
+        void (async () => {
+            try {
+                await registerUser(formData.email, formData.password, {
+                    email: formData.email,
+                    name: formData.name,
+                    address: formData.address
+                });
+                navigate('/');
+            } catch (error) {
+                setError('Failed to register');
+                console.error('Registration error:', error);
+            }
+        })();
     };
 
     return (
@@ -50,14 +52,7 @@ const Register: React.FC = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                     setFormData({ ...formData, password: e.target.value })}
             />
-            <input
-                type="text"
-                placeholder="Name"
-                value={formData.name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
-                    setFormData({ ...formData, name: e.target.value })}
-            />
-            {error && <p className="error-message">{error}</p>}
+            {error && <div className="error-message">{error}</div>}
             <button type="submit">Register</button>
         </form>
     );

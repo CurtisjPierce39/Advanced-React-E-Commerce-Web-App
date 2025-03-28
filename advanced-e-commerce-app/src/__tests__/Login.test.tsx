@@ -41,19 +41,22 @@ describe('Auth Component', () => {
         });
 
         it('handles successful login', async () => {
+            (authService.login as jest.Mock).mockResolvedValueOnce({ user: { uid: '123' } });
             renderAuth();
+            
             const emailInput = screen.getByTestId('email-input');
             const passwordInput = screen.getByTestId('password-input');
             const submitButton = screen.getByTestId('submit-button');
-
+    
             fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
             fireEvent.change(passwordInput, { target: { value: 'password123' } });
-            fireEvent.click(submitButton);
-
+    
             await waitFor(() => {
-                expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
-                expect(mockNavigate).toHaveBeenCalledWith('/');
+                fireEvent.click(submitButton);
             });
+    
+            expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
+            expect(mockNavigate).toHaveBeenCalledWith('/');
         });
 
         it('handles login error', async () => {
