@@ -70,8 +70,11 @@ describe('Auth Component', () => {
 
             fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
             fireEvent.change(passwordInput, { target: { value: 'password123' } });
-            fireEvent.click(submitButton);
-
+            
+            await waitFor(() => {
+                fireEvent.click(submitButton);
+            });
+    
             await waitFor(() => {
                 expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });

@@ -18,10 +18,10 @@ export const UserProfile: React.FC = () => {
     useEffect(() => {
         const loadProfile = async () => {
             if (auth.currentUser) {
-                const userData = await userService.getUserProfile(auth.currentUser.uid);
-                setProfile(userData as UserProfile);
-                setName(userData?.name ?? '');
-                setAddress(userData?.address ?? '');
+                const userData = await userService.getUserProfile(auth.currentUser.uid) as UserProfile;
+                setProfile(userData);
+                setName(userData?.name || '');
+                setAddress(userData?.address || '');
             }
         };
         void loadProfile();

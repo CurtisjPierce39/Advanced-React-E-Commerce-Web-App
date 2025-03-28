@@ -27,17 +27,17 @@ export interface CartItem extends Omit<Product, 'title'> {
 const BASE_URL = 'https://fakestoreapi.com';
 
 export const getProducts = async (): Promise<Product[]> => {
-    const response = await axios.get(`${BASE_URL}/products`);
+    const response = await axios.get<Product[]>(`${BASE_URL}/products`);
     return response.data;
 };
 
 export const getCategories = async (): Promise<string[]> => {
-    const response = await axios.get(`${BASE_URL}/products/categories`);
+    const response = await axios.get<string[]>(`${BASE_URL}/products/categories`);
     return response.data;
 };
 
 export const getProductsByCategory = async (category: string): Promise<Product[]> => {
-    const response = await axios.get(`${BASE_URL}/products/category/${category}`);
+    const response = await axios.get<Product[]>(`${BASE_URL}/products/category/${category}`);
     return response.data;
 };
 
