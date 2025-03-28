@@ -3,7 +3,7 @@ import { useAuth } from './AuthContext';
 import { orderService, OrderItem } from '../store/orderService';
 
 const OrderHistory: React.FC = () => {
-    const [orders, setOrders] = useState<any[]>([]);
+    const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { currentUser } = useAuth();
@@ -23,7 +23,7 @@ const OrderHistory: React.FC = () => {
             }
         };
 
-        fetchOrders();
+        void fetchOrders();
     }, [currentUser]);
 
     if (loading) return <div>Loading orders...</div>;
@@ -35,7 +35,7 @@ const OrderHistory: React.FC = () => {
             {orders.length === 0 ? (
                 <p>No orders found</p>
             ) : (
-                orders.map(order => (
+                orders.map((order: Order) => (
                     <div key={order.id} className="order-card">
                         <div className="order-header">
                             <span>Order ID: {order.id}</span><br></br>

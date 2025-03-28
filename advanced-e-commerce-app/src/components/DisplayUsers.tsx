@@ -38,7 +38,7 @@ const DisplayData = () => {
             setUsers(dataArray);
         };
 
-        fetchData();
+        void fetchData();
     }, []);
 
     return (
@@ -61,7 +61,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new name:"
                     />
-                    <button onClick={() => updateUser(user.id, { name: newName })}>
+                    <button onClick={() => void updateUser(user.id!, { name: newName })}>
                         Update Name
                     </button><br></br>
                     <input
@@ -69,7 +69,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new email:"
                     />
-                    <button onClick={() => updateUser(user.id, { email: newEmail })}>
+                    <button onClick={() => void updateUser(user.id!, { email: newEmail })}>
                         Update Email
                     </button><br></br>
                     <input
@@ -77,7 +77,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new address:"
                     />
-                    <button onClick={() => updateUser(user.id, { address: newAddress })}>
+                    <button onClick={() => void updateUser(user.id!, { address: newAddress })}>
                         Update Address
                     </button><br></br>
                     <input
@@ -85,10 +85,10 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new display name:"
                     />
-                    <button onClick={() => updateUser(user.id, { displayName: newDisplayName })}>
+                    <button onClick={() => void updateUser(user.id!, { displayName: newDisplayName })}>
                         Update Display Name
                     </button><br></br>
-                    <button style={{ backgroundColor: 'crimson' }} onClick={() => deleteUser(user.id)}>Delete User</button>
+                    <button style={{ backgroundColor: 'crimson' }} onClick={() => void deleteUser(user.id!)}>Delete User</button>
                 </div>
             ))}
         </div>
