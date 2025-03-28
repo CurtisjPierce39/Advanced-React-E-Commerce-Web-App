@@ -117,7 +117,7 @@ export const Checkout: React.FC = () => {
                 </div>
             </div>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e: React.FormEvent) => { void handleSubmit(e); }}>
                 <div className="shipping-details mb-4">
                     <h3>Shipping Details</h3>
                     <input

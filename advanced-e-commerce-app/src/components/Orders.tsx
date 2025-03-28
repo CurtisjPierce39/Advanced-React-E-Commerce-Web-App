@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './AuthContext';
-import { orderService, OrderItem } from '../store/orderService';
+import { orderService, OrderItem, Order } from '../store/orderService';
 
 const OrderHistory: React.FC = () => {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -14,7 +14,7 @@ const OrderHistory: React.FC = () => {
 
             try {
                 const userOrders = await orderService.getUserOrders(currentUser.uid);
-                setOrders(userOrders);
+                setOrders(userOrders as Order[]);
             } catch (err) {
                 setError('Failed to fetch orders');
                 console.error(err);
@@ -35,12 +35,12 @@ const OrderHistory: React.FC = () => {
             {orders.length === 0 ? (
                 <p>No orders found</p>
             ) : (
-                orders.map((order: Order) => (
+                orders.map((order) => (
                     <div key={order.id} className="order-card">
                         <div className="order-header">
                             <span>Order ID: {order.id}</span><br></br>
                             <span>User ID: {order.userId}</span><br></br>
-                            <span>Date: {order.createdAt.toDate().toLocaleDateString()}</span>
+                            <span>Date: {new Date(order.createdAt).toLocaleDateString()}</span>
                         </div>
                         <div className="border p-4 rounded">
                             {order.items.map((item: OrderItem, index: number) => (
@@ -52,7 +52,7 @@ const OrderHistory: React.FC = () => {
                             ))}
                         </div>
                         <div className="order-total">
-                            <strong>Total: ${order.totalAmount}</strong>
+                            <strong>Total: ${order.totalPrice}</strong>
                         </div><br></br>
                     </div>
                 ))

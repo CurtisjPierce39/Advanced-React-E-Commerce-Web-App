@@ -33,7 +33,7 @@ export const Auth: React.FC = () => {
     return (
         <div className="auth-container">
             <h2 data-testid="auth-title">{isLogin ? 'Login' : 'Register'}</h2>
-            <form onSubmit={handleSubmit} data-testid="auth-form">
+            <form onSubmit={(e: React.FormEvent) => { void handleSubmit(e); }} data-testid="auth-form">
                 <input
                     type="email"
                     placeholder="Email"

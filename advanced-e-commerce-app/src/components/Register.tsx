@@ -21,13 +21,13 @@ const Register = () => {
                 address: formData.address
             });
             navigate('/');
-        } catch (err) {
+        } catch (_err) {
             setError('Failed to register');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e: React.FormEvent) => { void handleSubmit(e); }}>
             <input
                 type="email"
                 placeholder="Email"

@@ -41,7 +41,7 @@ export const Navbar: React.FC = () => {
                         <Link to="/orders">Orders</Link>
                         <Link to="/profile">Profile</Link>
                         <Link to="/checkout">Checkout</Link>
-                        <button className="logout-btn" onClick={handleLogout}>
+                        <button className="logout-btn" onClick={() => { void handleLogout(); }}>
                             Logout
                         </button>
                     </>

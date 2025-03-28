@@ -21,7 +21,7 @@ export const ProductList: React.FC = () => {
                 setLoading(false);
             }
         };
-        loadProducts();
+        void loadProducts();
     }, []);
 
     if (loading) return <div>Loading...</div>
@@ -35,7 +35,7 @@ export const ProductList: React.FC = () => {
                     <img className='img-fluid' src={product.imageUrl} alt={product.name} />
                     <h3>{product.name}</h3>
                     <p>{product.description}</p>
-                    <p>"{product.category}"</p>
+                    <p>&quot;{product.category}&quot;</p>
                     <p>Price: ${product.price}</p>
                     <p>Stock: {product.stock}</p>
                     <button
