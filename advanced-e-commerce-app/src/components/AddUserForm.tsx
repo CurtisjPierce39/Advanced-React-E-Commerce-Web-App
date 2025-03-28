@@ -10,12 +10,12 @@ interface User {
     displayName: string;
 }
 
-const AddDataForm = () => {
+const AddDataForm: React.FC = () => {
     const [data, setData] = useState<User>({ name: '', email: '', address: '', displayName: ''});
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setData({ ...data, [name]: name === 'age' ? parseInt(value) : value });
+        setData({ ...data, [name]: value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -30,7 +30,7 @@ const AddDataForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e: React.FormEvent) => { void handleSubmit(e); }}>
             <h1>Add New User</h1>
             <input name="name" value={data.name} onChange={handleChange} placeholder="Name" /><br></br>
             <input name="email" value={data.email} onChange={handleChange} placeholder="Email" /><br></br>

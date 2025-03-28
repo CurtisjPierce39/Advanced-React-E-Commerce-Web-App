@@ -3,13 +3,21 @@ import { RootState } from '../types';
 import { removeFromCart } from '../store/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
-export const ShoppingCart = () => {
+interface CartItem {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image: string;
+}
+
+export const ShoppingCart: React.FC = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
-    const totalItems = cartItems.reduce((sum: any, item: { quantity: any; }) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum: number, item: { price: number; quantity: number; }) => sum + (item.price * item.quantity), 0);
+    const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+    const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
 
     const handleCheckout = () => {
         navigate('/checkout');
@@ -22,7 +30,7 @@ export const ShoppingCart = () => {
                 <p>Your cart is empty</p>
             ) : (
                 <>
-                    {cartItems.map(item => (
+                    {cartItems.map((item: CartItem) => (
                         <div key={item.id} className="flex items-center border-b py-4 content">
                             <img src={item.image} alt={item.name} className="w-24 h-24 object-contain img-fluid" />
                             <div className="ml-4 flex-grow">
@@ -43,7 +51,6 @@ export const ShoppingCart = () => {
                         <p>Total Price: ${totalPrice.toFixed(2)}</p>
                         <button
                             onClick={handleCheckout}
-
                             className="mt-4 bg-green-500 px-4 py-2 rounded"
                         >
                             Checkout

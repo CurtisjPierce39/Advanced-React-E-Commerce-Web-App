@@ -2,8 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { userService } from '../store/userService';
 import { auth } from '../types/firebaseConfig';
 
+interface UserProfile {
+    name?: string;
+    email?: string;
+    address?: string;
+    displayName?: string;
+}
+
 export const UserProfile: React.FC = () => {
-    const [profile, setProfile] = useState<any>(null);
+    const [profile, setProfile] = useState<UserProfile | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -12,18 +19,18 @@ export const UserProfile: React.FC = () => {
         const loadProfile = async () => {
             if (auth.currentUser) {
                 const userData = await userService.getUserProfile(auth.currentUser.uid);
-                setProfile(userData);
-                setName(userData?.name || '');
-                setAddress(userData?.address || '');
+                setProfile(userData as UserProfile);
+                setName(userData?.name ?? '');
+                setAddress(userData?.address ?? '');
             }
         };
-        loadProfile();
+        void loadProfile();
     }, []);
 
     const handleUpdateProfile = async () => {
         if (auth.currentUser) {
             await userService.updateUserProfile(auth.currentUser.uid, { name, address });
-            setProfile({ ...profile, name, address });
+            setProfile((prev) => prev ? { ...prev, name, address } : { name, address });
             setIsEditing(false);
         }
     };
@@ -51,7 +58,7 @@ export const UserProfile: React.FC = () => {
                         onChange={(e) => setAddress(e.target.value)}
                         placeholder="Address"
                     />
-                    <button onClick={handleUpdateProfile}>Save Changes</button>
+                    <button onClick={() => void handleUpdateProfile()}>Save Changes</button>
                     <button onClick={() => setIsEditing(false)}>Cancel</button>
                 </div>
             )}

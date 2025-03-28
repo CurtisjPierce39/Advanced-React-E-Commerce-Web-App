@@ -2,9 +2,16 @@ import React, { useState } from 'react';
 import { registerUser } from '../store/authService';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+interface UserFormData {
+    email: string;
+    password: string;
+    name: string;
+    address: string;
+}
+
+const Register: React.FC = () => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<UserFormData>({
         email: '',
         password: '',
         name: '',
@@ -12,7 +19,7 @@ const Register = () => {
     });
     const [error, setError] = useState('');
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             await registerUser(formData.email, formData.password, {
@@ -21,32 +28,36 @@ const Register = () => {
                 address: formData.address
             });
             navigate('/');
-        } catch (_err) {
+        } catch (error) {
             setError('Failed to register');
+            console.error('Registration error:', error);
         }
     };
 
     return (
-        <form onSubmit={(e: React.FormEvent) => { void handleSubmit(e); }}>
+        <form onSubmit={handleSubmit}>
             <input
                 type="email"
                 placeholder="Email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                    setFormData({ ...formData, email: e.target.value })}
             />
             <input
                 type="password"
                 placeholder="Password"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                    setFormData({ ...formData, password: e.target.value })}
             />
             <input
                 type="text"
                 placeholder="Name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
+                    setFormData({ ...formData, name: e.target.value })}
             />
-            {error && <p>{error}</p>}
+            {error && <p className="error-message">{error}</p>}
             <button type="submit">Register</button>
         </form>
     );
