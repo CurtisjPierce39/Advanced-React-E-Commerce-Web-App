@@ -4,10 +4,22 @@ import { Auth } from '../components/Login';
 import { authService } from '../store/authService';
 
 // Mock the auth service
+interface UserData {
+    email: string;
+    name: string;
+    address: string;
+}
+
+interface AuthResponse {
+    user: {
+        uid: string;
+    };
+}
+
 jest.mock('../store/authService', () => ({
     authService: {
-        login: jest.fn<Promise<{ user: { uid: string } }>, [string, string]>(),
-        register: jest.fn<Promise<{ user: { uid: string } }>, [string, string, { email: string; name: string; address: string }]>()
+        login: jest.fn<Promise<AuthResponse>, [string, string]>(),
+        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>()
     }
 }));
 
@@ -112,17 +124,19 @@ describe('Auth Component', () => {
 
             fireEvent.click(submitButton);
 
+            const userData: UserData = {
+                email: 'test@example.com',
+                name: 'Test User',
+                address: 'Test Address'
+            };
+
             await waitFor(() => {
-                expect(() => authService.register(
+                expect(authService.register).toHaveBeenCalledWith(
                     'test@example.com',
                     'password123',
-                    expect.objectContaining({
-                        email: 'test@example.com',
-                        name: 'Test User',
-                        address: 'Test Address'
-                    })
-                )).toBeCalled();
-                expect(() => mockNavigate('/')).toBeCalled();
+                    userData
+                );
+                expect(mockNavigate).toHaveBeenCalledWith('/');
             });
         });
     });

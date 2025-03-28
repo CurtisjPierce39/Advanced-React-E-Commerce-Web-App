@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../types';
 import { RootState } from '../types';
 import { removeFromCart } from '../store/cartSlice';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ interface CartItem {
 }
 
 export const ShoppingCart: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
