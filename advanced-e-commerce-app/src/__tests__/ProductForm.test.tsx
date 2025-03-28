@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import React from 'react';
-import { ProductForm } from '../components/productForm';
+import * as React from 'react';
+import ProductForm from '../components/productForm';
 import { productService } from '../store/productService';
 
 jest.mock('../store/productService', () => ({
@@ -36,16 +36,17 @@ describe('ProductForm', () => {
         const form = screen.getByRole('form');
         fireEvent.submit(form);
 
-        await waitFor(async () => {
-            expect(productService.createProduct).toHaveBeenCalledTimes(1);
-            expect(productService.createProduct).toHaveBeenCalledWith({
+        await waitFor(() => {
+            const expectedData = {
                 name: 'T Shirt',
                 price: 0,
                 description: 'White T Shirt',
                 stock: 0,
                 imageUrl: 'unsplash.com/tshirt',
                 category: 'Mens Clothing'
-            });
+            };
+            expect(productService.createProduct).toHaveBeenCalledTimes(1);
+            expect(productService.createProduct).toHaveBeenCalledWith(expectedData);
         });
     });
 });
