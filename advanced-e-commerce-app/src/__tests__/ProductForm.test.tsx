@@ -36,7 +36,7 @@ describe('ProductForm', () => {
         const form = screen.getByRole('form');
         fireEvent.submit(form);
 
-        await waitFor(() => {
+        await waitFor(async () => {
             expect(productService.createProduct).toHaveBeenCalledTimes(1);
             expect(productService.createProduct).toHaveBeenCalledWith({
                 name: 'T Shirt',

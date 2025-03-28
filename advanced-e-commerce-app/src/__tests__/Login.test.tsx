@@ -63,12 +63,11 @@ describe('Auth Component', () => {
             fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
             fireEvent.change(passwordInput, { target: { value: 'password123' } });
     
-            await waitFor(() => {
+            await waitFor(async () => {
                 fireEvent.click(submitButton);
+                expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
+                expect(mockNavigate).toHaveBeenCalledWith('/');
             });
-    
-            expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
-            expect(mockNavigate).toHaveBeenCalledWith('/');
         });
 
         it('handles login error', async () => {
@@ -83,13 +82,9 @@ describe('Auth Component', () => {
             fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
             fireEvent.change(passwordInput, { target: { value: 'password123' } });
             
-            await waitFor(() => {
+            await waitFor(async () => {
                 fireEvent.click(submitButton);
                 expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
-                expect(mockNavigate).toHaveBeenCalledWith('/');
-            });
-    
-            await waitFor(() => {
                 expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });
         });

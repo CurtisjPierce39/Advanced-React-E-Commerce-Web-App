@@ -109,6 +109,7 @@ export const Checkout: React.FC = () => {
                     <div key={item.id} className="flex items-center border-b py-4 content">
                         <img src={item.image} alt={item.name} className="w-24 h-24 object-contain img-fluid" />
                         <p>{item.name}</p><br></br>
+                        <p>{item.description}</p><br></br>
                         <span><strong>{item.quantity} x ${item.price}</strong></span>
                     </div>
                 ))}

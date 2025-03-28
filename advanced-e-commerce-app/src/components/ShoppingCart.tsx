@@ -18,7 +18,7 @@ export const ShoppingCart: React.FC = () => {
     const cartItems = useSelector((state: RootState) => state.cart.items);
 
     const totalItems = cartItems.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0);
+    const totalPrice = cartItems.reduce((sum: number, item: CartItem) => sum + (item.price * item.quantity), 0).toFixed(2);
 
     const handleCheckout = () => {
         navigate('/checkout');
@@ -36,6 +36,7 @@ export const ShoppingCart: React.FC = () => {
                             <img src={item.image} alt={item.name} className="w-24 h-24 object-contain img-fluid" />
                             <div className="ml-4 flex-grow">
                                 <h2 className="font-bold">{item.name}</h2>
+                                <p>{item.description}</p>
                                 <p>Quantity: {item.quantity}</p>
                                 <p>Price: ${(item.price * item.quantity).toFixed(2)}</p>
                                 <button
@@ -49,7 +50,7 @@ export const ShoppingCart: React.FC = () => {
                     ))}
                     <div className="mt-4">
                         <p>Total Items: {totalItems}</p>
-                        <p>Total Price: ${totalPrice.toFixed(2)}</p>
+                        <p>Total Price: ${totalPrice}</p>
                         <button
                             onClick={handleCheckout}
                             className="mt-4 bg-green-500 px-4 py-2 rounded"

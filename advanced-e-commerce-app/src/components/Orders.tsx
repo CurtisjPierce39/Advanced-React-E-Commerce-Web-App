@@ -40,19 +40,19 @@ const OrderHistory: React.FC = () => {
                         <div className="order-header">
                             <span>Order ID: {order.id}</span><br></br>
                             <span>User ID: {order.userId}</span><br></br>
-                            <span>Date: {new Date(order.createdAt).toLocaleDateString()}</span>
+                            <span>Date: {order.createdAt instanceof Date ? order.createdAt.toLocaleDateString() : new Date(order.createdAt.seconds * 1000).toLocaleDateString()}</span>
                         </div>
                         <div className="border p-4 rounded">
                             {order.items.map((item: OrderItem, index: number) => (
                                 <div key={index} className="order-item"><br></br>
-                                    <span>Product ID: {item.productId}</span><br></br>
+                                    <span>Product ID: {item.name}</span><br></br>
                                     <span>Quantity: {item.quantity}</span><br></br>
                                     <span>Price: ${item.price}</span>
                                 </div>
                             ))}
                         </div>
                         <div className="order-total">
-                            <strong>Total: ${order.totalPrice}</strong>
+                            <strong>Total: ${order.totalAmount}</strong>
                         </div><br></br>
                     </div>
                 ))
