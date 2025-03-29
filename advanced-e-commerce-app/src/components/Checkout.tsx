@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
 import { clearCart } from '../store/cartSlice';
-import { RootState } from '../types';
+import { CartItem, RootState } from '../types';
 import { useNavigate } from 'react-router-dom';
 
 interface ShippingDetails {
@@ -40,13 +40,7 @@ export const Checkout: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!currentUser) {
-            alert('Please login to checkout');
-            return;
-        }
-
-        if (!cart.items.length) {
-            alert('Your cart is empty');
+        
         if (!currentUser?.uid) {
             alert('Please login to checkout');
             return;
@@ -68,41 +62,14 @@ export const Checkout: React.FC = () => {
             alert('Some items in your cart are invalid. Please try again.');
             return;
         }
-        }
 
-        const validItems = cart.items.every(item => (
-            item.id &&
-            item.name &&
+        setIsLoading(true);
+        try {
+            const orderData = {
+                userId: currentUser.uid,
                 items: cart.items.map((item: CartItem) => ({
                     name: item.name,
                     productId: item.id,
-                    quantity: item.quantity,
-                    price: item.price
-                })),
-                totalAmount: totalPrice,
-                shippingDetails: {
-                    address: shippingDetails.address.trim(),
-                    city: shippingDetails.city.trim(),
-                    zipCode: shippingDetails.zipCode.trim(),
-                    country: shippingDetails.country.trim()
-                },
-                status: 'pending',
-
-        if (!validItems) {
-            alert('Some items in your cart are invalid. Please try again.');
-            const ordersRef = collection(db, 'orders');
-            await addDoc(ordersRef, orderData);
-        }
-            alert('Thank you for your purchase!');
-            navigate('/');
-        setIsLoading(true);
-        try {
-            alert('Failed to create order. Please try again.');
-            const orderData = {
-                userId: currentUser.uid,
-                items: cart.items.map(item => ({
-                    name: item.name,
-                    productId: item.id.toString(),
                     quantity: item.quantity,
                     price: item.price
                 })),
