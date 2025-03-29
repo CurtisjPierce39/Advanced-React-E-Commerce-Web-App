@@ -47,10 +47,17 @@ export const Checkout: React.FC = () => {
 
         if (!cart.items.length) {
             alert('Your cart is empty');
+        if (!currentUser?.uid) {
+            alert('Please login to checkout');
             return;
         }
 
-        const validItems = cart.items.every(item => (
+        if (!cart.items.length) {
+            alert('Your cart is empty');
+            return;
+        }
+
+        const validItems = cart.items.every((item: CartItem) => (
             item.id &&
             item.name &&
             typeof item.price === 'number' &&
@@ -61,9 +68,36 @@ export const Checkout: React.FC = () => {
             alert('Some items in your cart are invalid. Please try again.');
             return;
         }
+        }
 
+        const validItems = cart.items.every(item => (
+            item.id &&
+            item.name &&
+                items: cart.items.map((item: CartItem) => ({
+                    name: item.name,
+                    productId: item.id,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                totalAmount: totalPrice,
+                shippingDetails: {
+                    address: shippingDetails.address.trim(),
+                    city: shippingDetails.city.trim(),
+                    zipCode: shippingDetails.zipCode.trim(),
+                    country: shippingDetails.country.trim()
+                },
+                status: 'pending',
+
+        if (!validItems) {
+            alert('Some items in your cart are invalid. Please try again.');
+            const ordersRef = collection(db, 'orders');
+            await addDoc(ordersRef, orderData);
+        }
+            alert('Thank you for your purchase!');
+            navigate('/');
         setIsLoading(true);
         try {
+            alert('Failed to create order. Please try again.');
             const orderData = {
                 userId: currentUser.uid,
                 items: cart.items.map(item => ({

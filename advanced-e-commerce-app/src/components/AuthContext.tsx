@@ -14,10 +14,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Initialize auth state listener
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Ensure we have all user data
                 setCurrentUser(user);
                 console.log('User authenticated:', user.uid);
             } else {
@@ -27,11 +25,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setLoading(false);
         });
 
-        // Cleanup subscription
         return () => unsubscribe();
     }, []);
 
-    // Prevent rendering until auth is initialized
     if (loading) {
         return <div>Loading...</div>;
     }

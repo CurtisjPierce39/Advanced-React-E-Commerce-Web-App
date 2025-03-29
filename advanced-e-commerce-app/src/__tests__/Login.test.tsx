@@ -19,7 +19,9 @@ interface AuthResponse {
 jest.mock('../store/authService', () => ({
     authService: {
         login: jest.fn<Promise<AuthResponse>, [string, string]>(),
-        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>()
+        register: jest.fn<Promise<AuthResponse>, [UserData]>().mockImplementation(async (_userData: UserData): Promise<AuthResponse> => {
+            return { user: { uid: '123' } };
+        })
     }
 }));
 
@@ -87,7 +89,7 @@ describe('Auth Component', () => {
             await waitFor(() => {
                 const loginFn = authService.login as jest.Mock;
                 expect(() => loginFn.toHaveBeenCalledWith('test@example.com', 'password123'));
-                expect(() => screen.getByTestId('error-message').toHaveTextContent('Login failed'));
+                expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });
         });
 
