@@ -2,24 +2,24 @@ import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
 
 if (typeof global.TextEncoder === 'undefined') {
-    global.TextEncoder = TextEncoder;
-    global.TextDecoder = TextDecoder;
+    global.TextEncoder = TextEncoder as typeof global.TextEncoder;
+    global.TextDecoder = TextDecoder as typeof global.TextDecoder;
 }
 
 // Extend Jest matchers
 declare global {
-    namespace jest {
-        interface Expect {
-            toHaveBeenCalledWith: (...args: any[]) => void;
-        }
+    export interface Matchers<R> {
+        toBeInTheDocument(): R;
+        toHaveTextContent(text: string): R;
+    }
+}
 
-        interface Matchers<R, T = {}> {
-            toBeInTheDocument(): R;
-            toHaveTextContent(text: string): R;
-        }
+declare global {
+    interface Expect {
+        toHaveBeenCalledWith<TArgs extends unknown[]>(...args: TArgs): void;
+    }
 
-        interface MockInstance<T, Y extends any[]> {
-            toHaveBeenCalledWith: (...args: Y) => void;
-        }
+    interface MockInstance<TArgs extends unknown[], TReturns> {
+        toHaveBeenCalledWith(...args: TArgs): void;
     }
 }

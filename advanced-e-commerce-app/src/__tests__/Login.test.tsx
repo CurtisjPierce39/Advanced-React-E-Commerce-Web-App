@@ -67,8 +67,8 @@ describe('Auth Component', () => {
             fireEvent.click(submitButton);
             await waitFor(() => {
                 const loginFn = authService.login as jest.Mock;
-                expect(() => loginFn.toHaveBeenCalledWith('test@example.com', 'password123'));
-                expect(() => mockNavigate.toHaveBeenCalledWith('/'));
+                expect(loginFn).toHaveBeenCalledWith('test@example.com', 'password123');
+                expect(mockNavigate).toHaveBeenCalledWith('/');
             });
         });
 
@@ -87,7 +87,7 @@ describe('Auth Component', () => {
             fireEvent.click(submitButton);
             await waitFor(() => {
                 const loginFn = authService.login as jest.Mock;
-                expect(() => loginFn.toHaveBeenCalledWith('test@example.com', 'password123'));
+                expect(loginFn).toHaveBeenCalledWith('test@example.com', 'password123');
                 expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });
         });
@@ -128,12 +128,12 @@ describe('Auth Component', () => {
 
             await waitFor(() => {
                 const registerFn = authService.register as jest.Mock;
-                expect(() => registerFn.toHaveBeenCalledWith(
+                expect(registerFn).toHaveBeenCalledWith(
                     'test@example.com',
                     'password123',
                     userData
-                ));
-                expect(() => mockNavigate.toHaveBeenCalledWith('/'));
+                );
+                expect(mockNavigate).toHaveBeenCalledWith('/');
             });
         });
     });

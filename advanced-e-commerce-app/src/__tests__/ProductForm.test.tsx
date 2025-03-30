@@ -45,8 +45,8 @@ describe('ProductForm', () => {
                 category: 'Mens Clothing'
             };
             const createProductFn = productService.createProduct as jest.Mock;
-            expect(() => createProductFn.toHaveBeenCalledTimes(1));
-            expect(() => createProductFn.toHaveBeenCalledWith(expectedData));
+            expect(createProductFn).toHaveBeenCalledTimes(1);
+            expect(createProductFn).toHaveBeenCalledWith(expectedData);
         });
     });
 });
