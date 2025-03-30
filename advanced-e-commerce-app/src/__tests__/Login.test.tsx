@@ -3,7 +3,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { Auth } from '../components/Login';
 import { authService } from '../store/authService';
 
-// Mock the auth service
 interface UserData {
     email: string;
     name: string;
@@ -19,7 +18,7 @@ interface AuthResponse {
 jest.mock('../store/authService', () => ({
     authService: {
         login: jest.fn<Promise<AuthResponse>, [string, string]>(),
-        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>().mockImplementation(async (_email: string, _password: string, _userData: UserData): Promise<AuthResponse> => {
+        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>().mockImplementation(async (email: string, password: string, userData: UserData): Promise<AuthResponse> => {
             await Promise.resolve();
             return { user: { uid: '123' } };
         })
@@ -67,8 +66,8 @@ describe('Auth Component', () => {
     
             fireEvent.click(submitButton);
             await waitFor(() => {
-                const loginFn = authService.login as jest.Mock;
-                expect(loginFn).toHaveBeenCalledWith('test@example.com', 'password123');
+                const loginFn = () => authService.login;
+                expect(loginFn()).toHaveBeenCalledWith('test@example.com', 'password123');
                 expect(mockNavigate).toHaveBeenCalledWith('/');
             });
         });
@@ -87,8 +86,8 @@ describe('Auth Component', () => {
             
             fireEvent.click(submitButton);
             await waitFor(() => {
-                const loginFn = authService.login as jest.Mock;
-                expect(loginFn).toHaveBeenCalledWith('test@example.com', 'password123');
+                const loginFn = () => authService.login;
+                expect(loginFn()).toHaveBeenCalledWith('test@example.com', 'password123');
                 expect(screen.getByTestId('error-message')).toHaveTextContent('Login failed');
             });
         });
@@ -128,8 +127,8 @@ describe('Auth Component', () => {
             };
 
             await waitFor(() => {
-                const registerFn = authService.register as jest.Mock;
-                expect(registerFn).toHaveBeenCalledWith(
+                const registerFn = () => authService.register;
+                expect(registerFn()).toHaveBeenCalledWith(
                     'test@example.com',
                     'password123',
                     userData

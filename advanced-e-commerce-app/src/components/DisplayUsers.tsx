@@ -48,9 +48,9 @@ const DisplayData = () => {
                 <div
                     key={user.id}
                     style={{ border: '2px solid black', margin: '10px' }}
-                    className='border p-4 rounded'
+                    className='border p-4 bg-gradient rounded'
                 >
-                    <div key={user.id}>
+                    <div key={user.id} className='bg-gradient rounded p-3 border'>
                         <p>Name: {user.name}</p>
                         <p>Email: {user.email}</p>
                         <p>Address: {user.address}</p>
@@ -61,7 +61,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new name:"
                     />
-                    <button onClick={() => void updateUser(user.id!, { name: newName })}>
+                    <button className='bg-gradient rounded m-2' onClick={() => void updateUser(user.id!, { name: newName })}>
                         Update Name
                     </button><br></br>
                     <input
@@ -69,7 +69,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new email:"
                     />
-                    <button onClick={() => void updateUser(user.id!, { email: newEmail })}>
+                    <button className='bg-gradient rounded m-2' onClick={() => void updateUser(user.id!, { email: newEmail })}>
                         Update Email
                     </button><br></br>
                     <input
@@ -77,7 +77,7 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new address:"
                     />
-                    <button onClick={() => void updateUser(user.id!, { address: newAddress })}>
+                    <button className='bg-gradient rounded m-2' onClick={() => void updateUser(user.id!, { address: newAddress })}>
                         Update Address
                     </button><br></br>
                     <input
@@ -85,10 +85,10 @@ const DisplayData = () => {
                         type="string"
                         placeholder="Enter new display name:"
                     />
-                    <button onClick={() => void updateUser(user.id!, { displayName: newDisplayName })}>
+                    <button className='bg-gradient rounded m-2' onClick={() => void updateUser(user.id!, { displayName: newDisplayName })}>
                         Update Display Name
                     </button><br></br>
-                    <button style={{ backgroundColor: 'crimson' }} onClick={() => void deleteUser(user.id!)}>Delete User</button>
+                    <button className='bg-gradient rounded m-2' style={{ backgroundColor: 'crimson' }} onClick={() => void deleteUser(user.id!)}>Delete User</button>
                 </div>
             ))}
         </div>

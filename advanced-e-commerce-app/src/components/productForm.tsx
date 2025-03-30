@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { productService, Product } from '../store/productService';
 
 const ProductForm: React.FC = () => {
-    const [product, setProduct] = useState<Omit<Product, 'productId' | 'id'>>({        
+    const [product, setProduct] = useState<Omit<Product, 'productId' | 'id'>>({
         name: '',
         price: 0,
         description: '',
@@ -43,16 +43,17 @@ const ProductForm: React.FC = () => {
                 alert('Product added successfully!');
             } catch (error) {
                 console.error('Error adding product:', error);
-                alert('Failed to add product');
+                // alert('Failed to add product');
             }
         })();
     };
 
     return (
-        <form onSubmit={handleSubmit} role="form">
+        <form onSubmit={handleSubmit} role="form" className='container'>
             <div>
                 <label htmlFor="name">Product Name</label>
                 <input
+                    className='m-2'
                     type="text"
                     id="name"
                     name="name"
@@ -64,6 +65,7 @@ const ProductForm: React.FC = () => {
             <div>
                 <label htmlFor="price">Price</label>
                 <input
+                    className='m-2'
                     type="number"
                     id="price"
                     name="price"
@@ -75,16 +77,18 @@ const ProductForm: React.FC = () => {
             <div>
                 <label htmlFor="description">Description</label>
                 <textarea
+                    className='m-2'
                     id="description"
                     name="description"
                     value={product.description}
                     onChange={handleChange}
                     required
                 />
-            </div>
+            </div><br></br>
             <div>
                 <label htmlFor="stock">Stock</label>
                 <input
+                    className='m-2'
                     type="number"
                     id="stock"
                     name="stock"
@@ -96,6 +100,7 @@ const ProductForm: React.FC = () => {
             <div>
                 <label htmlFor="imageUrl">Image URL</label>
                 <input
+                    className='m-2'
                     type="text"
                     id="imageUrl"
                     name="imageUrl"
@@ -107,6 +112,7 @@ const ProductForm: React.FC = () => {
             <div>
                 <label htmlFor="category">Category</label>
                 <input
+                    className='m-2'
                     type="text"
                     id="category"
                     name="category"
@@ -114,8 +120,9 @@ const ProductForm: React.FC = () => {
                     onChange={handleChange}
                     required
                 />
-            </div>
-            <button type="submit">Add Product</button>
+            </div><br></br>
+            <button className='m-2 bg-gradient'
+                type="submit">Add Product</button>
         </form>
     );
 };

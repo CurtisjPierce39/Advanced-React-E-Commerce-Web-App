@@ -44,9 +44,9 @@ describe('ProductForm', () => {
                 imageUrl: 'unsplash.com/tshirt',
                 category: 'Mens Clothing'
             };
-            const createProductFn = productService.createProduct as jest.Mock;
-            expect(createProductFn).toHaveBeenCalledTimes(1);
-            expect(createProductFn).toHaveBeenCalledWith(expectedData);
+            const createProductFn = () => productService.createProduct;
+            expect(createProductFn()).toHaveBeenCalledTimes(1);
+            expect(createProductFn()).toHaveBeenCalledWith(expectedData);
         });
     });
 });

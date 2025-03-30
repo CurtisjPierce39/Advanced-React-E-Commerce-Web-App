@@ -36,15 +36,15 @@ export const UserProfile: React.FC = () => {
     };
 
     return (
-        <div className='border p-4 rounded'>
+        <div className='border p-4 rounded bg-gradient'>
             <h2>User Profile</h2>
             {!isEditing ? (
-                <div>
+                <div className='m3 rounded p-5 bg-gradient border'>
                     <p>Name: {profile?.name}</p>
                     <p>Email: {profile?.email}</p>
                     <p>Address: {profile?.address}</p>
                     <p>Display Name: {profile?.displayName}</p>
-                    <button onClick={() => setIsEditing(true)}>Edit Profile</button>
+                    <button className='bg-gradient rounded' onClick={() => setIsEditing(true)}>Edit Profile</button>
                 </div>
             ) : (
                 <div>
@@ -58,8 +58,8 @@ export const UserProfile: React.FC = () => {
                         onChange={(e) => setAddress(e.target.value)}
                         placeholder="Address"
                     />
-                    <button onClick={() => void handleUpdateProfile()}>Save Changes</button>
-                    <button onClick={() => setIsEditing(false)}>Cancel</button>
+                    <button className='bg-gradient rounded' onClick={() => void handleUpdateProfile()}>Save Changes</button>
+                    <button className='bg-gradient rounded' onClick={() => setIsEditing(false)}>Cancel</button>
                 </div>
             )}
         </div>

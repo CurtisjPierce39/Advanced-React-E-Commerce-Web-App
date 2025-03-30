@@ -36,24 +36,24 @@ const OrderHistory: React.FC = () => {
                 <p>No orders found</p>
             ) : (
                 orders.map((order) => (
-                    <div key={order.id} className="order-card">
-                        <div className="order-header">
+                    <div key={order.id} className="border m-5 pb-4 mx-5 rounded">
+                        <div className="order-header border m-2 bg-gradient rounded">
                             <span>Order ID: {order.id}</span><br></br>
                             <span>User ID: {order.userId}</span><br></br>
                             <span>Date: {order.createdAt instanceof Date ? order.createdAt.toLocaleDateString() : new Date(order.createdAt.seconds * 1000).toLocaleDateString()}</span>
                         </div>
-                        <div className="border p-4 rounded">
+                        <div>
                             {order.items.map((item: OrderItem, index: number) => (
                                 <div key={index} className="order-item"><br></br>
                                     <span>Product ID: {item.name}</span><br></br>
                                     <span>Quantity: {item.quantity}</span><br></br>
-                                    <span>Price: ${item.price}</span>
+                                    <span>Price: ${item.price}</span><br></br>
+                                    <div className="order-total">
+                                        <strong>Total: ${order.totalAmount}</strong>
+                                    </div><br></br>
                                 </div>
                             ))}
                         </div>
-                        <div className="order-total">
-                            <strong>Total: ${order.totalAmount}</strong>
-                        </div><br></br>
                     </div>
                 ))
             )}
