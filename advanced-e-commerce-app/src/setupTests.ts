@@ -9,16 +9,17 @@ if (typeof global.TextEncoder === 'undefined') {
 // Extend Jest matchers
 declare global {
     namespace jest {
-        interface Mock<T = any, Y extends any[] = any> {
-            toHaveBeenCalledWith: (...args: Y) => void;
+        interface Expect {
+            toHaveBeenCalledWith: (...args: any[]) => void;
         }
-    }
 
-    // Extend Jest matchers
-    namespace jest {
-        interface Matchers<R> {
+        interface Matchers<R, T = {}> {
             toBeInTheDocument(): R;
             toHaveTextContent(text: string): R;
+        }
+
+        interface MockInstance<T, Y extends any[]> {
+            toHaveBeenCalledWith: (...args: Y) => void;
         }
     }
 }
