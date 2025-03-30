@@ -17,7 +17,12 @@ const config: Config.InitialOptions = {
     globals: {
         'ts-jest': {
             tsconfig: 'tsconfig.json',
+            diagnostics: {
+                warnOnly: true
+            }
         },
+    rootDir: './',
+    roots: ['<rootDir>/src']
     },
 };
 

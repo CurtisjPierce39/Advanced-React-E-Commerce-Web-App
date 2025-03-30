@@ -19,7 +19,8 @@ interface AuthResponse {
 jest.mock('../store/authService', () => ({
     authService: {
         login: jest.fn<Promise<AuthResponse>, [string, string]>(),
-        register: jest.fn<Promise<AuthResponse>, [UserData]>().mockImplementation(async (_userData: UserData): Promise<AuthResponse> => {
+        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>().mockImplementation(async (_email: string, _password: string, _userData: UserData): Promise<AuthResponse> => {
+            await Promise.resolve();
             return { user: { uid: '123' } };
         })
     }

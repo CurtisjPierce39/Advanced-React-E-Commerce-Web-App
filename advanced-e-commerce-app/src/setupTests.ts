@@ -19,7 +19,7 @@ declare global {
         toHaveBeenCalledWith<TArgs extends unknown[]>(...args: TArgs): void;
     }
 
-    interface MockInstance<TArgs extends unknown[], TReturns> {
+    interface MockInstance<TArgs extends unknown[]> {
         toHaveBeenCalledWith(...args: TArgs): void;
     }
 }
