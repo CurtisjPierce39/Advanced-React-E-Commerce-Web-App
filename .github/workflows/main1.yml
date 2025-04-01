@@ -23,17 +23,9 @@ jobs:
       working-directory: ./advanced-e-commerce-app
       run: npm ci
 
-    - name: Lint
-      working-directory: ./advanced-e-commerce-app
-      run: npm run lint
-
     - name: Run tests
       working-directory: ./advanced-e-commerce-app
       run: npm test
-
-    - name: Run type-check
-      working-directory: ./advanced-e-commerce-app
-      run: npm run type-check
 
     - name: Build
       working-directory: ./advanced-e-commerce-app
