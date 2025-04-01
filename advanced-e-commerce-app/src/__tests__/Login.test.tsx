@@ -18,18 +18,20 @@ interface AuthResponse {
 jest.mock('../store/authService', () => ({
     authService: {
         login: jest.fn<Promise<AuthResponse>, [string, string]>(),
-        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>().mockImplementation(async (email: string, password: string, userData: UserData): Promise<AuthResponse> => {
-            await Promise.resolve();
+        register: jest.fn<Promise<AuthResponse>, [string, string, UserData]>().mockImplementation(async (): Promise<AuthResponse> => {
             return { user: { uid: '123' } };
         })
     }
 }));
 
 const mockNavigate = jest.fn();
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => mockNavigate
-}));
+jest.mock('react-router-dom', () => {
+    const actual = jest.requireActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate
+    };
+});
 
 describe('Auth Component', () => {
     beforeEach(() => {

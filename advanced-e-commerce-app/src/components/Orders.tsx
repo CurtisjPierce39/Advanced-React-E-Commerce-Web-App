@@ -26,6 +26,18 @@ const OrderHistory: React.FC = () => {
         void fetchOrders();
     }, [currentUser]);
 
+    const handleDeleteOrder = async (orderId: string) => {
+        if (!window.confirm('Are you sure you want to delete this order?')) return;
+
+        try {
+            await orderService.deleteOrder(orderId);
+            setOrders(prevOrders => prevOrders.filter(order => order.id !== orderId));
+        } catch (err) {
+            setError('Failed to delete order');
+            console.error(err);
+        }
+    };
+
     if (loading) return <div>Loading orders...</div>;
     if (error) return <div className="error-message">{error}</div>;
 
@@ -40,12 +52,12 @@ const OrderHistory: React.FC = () => {
                         <div className="order-header border m-2 bg-gradient rounded">
                             <span>Order ID: {order.id}</span><br></br>
                             <span>User ID: {order.userId}</span><br></br>
-                            <span>Date: {order.createdAt instanceof Date ? order.createdAt.toLocaleDateString() : new Date(order.createdAt.seconds * 1000).toLocaleDateString()}</span>
+                            <span>Date: {order.createdAt instanceof Date ? order.createdAt.toLocaleDateString() : new Date(order.createdAt * 1000).toLocaleDateString()}</span>
                         </div>
                         <div>
                             {order.items.map((item: OrderItem, index: number) => (
                                 <div key={index} className="order-item"><br></br>
-                                    <span>Product ID: {item.name}</span><br></br>
+                                    <span>Product: {item.name}</span><br></br>
                                     <span>Quantity: {item.quantity}</span><br></br>
                                     <span>Price: ${item.price}</span><br></br>
                                     <div className="order-total">
@@ -54,6 +66,13 @@ const OrderHistory: React.FC = () => {
                                 </div>
                             ))}
                         </div>
+                        <button
+                            onClick={() => void handleDeleteOrder(order.id)}
+                            className="px-4 py-2 text-white rounded hover:opacity-90 transition-opacity float-right"
+                            style={{ backgroundColor: 'crimson' }}
+                        >
+                            Delete Order
+                        </button>
                     </div>
                 ))
             )}

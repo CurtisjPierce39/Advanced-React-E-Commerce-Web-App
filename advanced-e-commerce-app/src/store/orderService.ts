@@ -4,7 +4,9 @@ import {
     getDocs,
     query,
     where,
-    orderBy
+    orderBy,
+    doc,
+    deleteDoc
 } from 'firebase/firestore';
 import { db } from '../types/firebaseConfig';
 
@@ -43,5 +45,10 @@ export const orderService = {
             id: doc.id,
             ...doc.data()
         }));
+    },
+
+    async deleteOrder(orderId: string) {
+        const orderRef = doc(db, 'orders', orderId);
+        await deleteDoc(orderRef);
     }
 };
