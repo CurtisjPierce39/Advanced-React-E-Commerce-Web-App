@@ -1,25 +1,25 @@
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../types';
+import { Link } from 'react-router-dom';//used for navigation between links
+import { useSelector } from 'react-redux';//uses Redux for state management
+import { RootState } from '../types'; //used for RootState type for TypeScript safety
 
 const Navbar = () => {
-    const cartItems = useSelector((state: RootState) => state.cart.items);
-    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const cartItems = useSelector((state: RootState) => state.cart.items);//retrieves cart items from Redux store
+    const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);//calculates total number of items in cart using "reduce"
 
     return (
-        <nav className="bg-gray-800 text-white p-4">
-            <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="text-xl font-bold">
+        <nav className="navbar">
+            <div className="navbar-brand">
+                <Link to="/">
                     FakeStore
                 </Link>
-                <div className="flex items-center gap-4">
-                    <Link to="/" className="hover:text-gray-300">
+                <div>
+                    <Link to="/">
                         Home
                     </Link>
-                    <Link to="/cart" className="flex items-center hover:text-gray-300">
+                    <Link to="/cart">
                         <span>Cart</span>
-                        {totalItems > 0 && (
-                            <span className="ml-2 bg-red-500 rounded-full px-2 py-1 text-xs">
+                        {totalItems > 0 && ( //shows badge with item count when cart is not empty
+                            <span>
                                 {totalItems}
                             </span>
                         )}
